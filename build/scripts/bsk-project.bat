@@ -67,11 +67,11 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\bsk-project-1.0-SNAPSHOT.jar;%APP_HOME%\lib\javafx-controls-17.0.1-win.jar;%APP_HOME%\lib\javafx-graphics-17.0.1-win.jar;%APP_HOME%\lib\javafx-graphics-17.0.1.jar;%APP_HOME%\lib\javafx-base-17.0.1-win.jar;%APP_HOME%\lib\javafx-base-17.0.1.jar
+set CLASSPATH=%APP_HOME%\lib\bsk-project-1.0-SNAPSHOT.jar;%APP_HOME%\lib\tink-1.6.1.jar;%APP_HOME%\lib\javafx-fxml-17.0.1-win.jar;%APP_HOME%\lib\javafx-controls-17.0.1-win.jar;%APP_HOME%\lib\javafx-controls-17.0.1.jar;%APP_HOME%\lib\javafx-graphics-17.0.1-win.jar;%APP_HOME%\lib\javafx-graphics-17.0.1.jar;%APP_HOME%\lib\javafx-base-17.0.1-win.jar;%APP_HOME%\lib\javafx-base-17.0.1.jar;%APP_HOME%\lib\protobuf-java-3.14.0.jar;%APP_HOME%\lib\gson-2.8.6.jar
 
 
 @rem Execute bsk-project
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %BSK_PROJECT_OPTS%  -classpath "%CLASSPATH%" mj.project.Application %*
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %BSK_PROJECT_OPTS%  -classpath "%CLASSPATH%" mj.project.Main %*
 
 :end
 @rem End local scope for the variables with windows NT shell
