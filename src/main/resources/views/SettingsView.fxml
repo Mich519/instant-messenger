@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="mj.project.controllers.SettingsViewController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
 
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mj.project.controllers.SettingsViewController">
+   <children>
+      <FlowPane layoutX="200.0" layoutY="107.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="222.0">
+               <children>
+                  <Label text="Block cypher " />
+                  <RadioButton mnemonicParsing="false" text="ECB" />
+                  <RadioButton mnemonicParsing="false" text="CBC" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="178.0">
+               <children>
+                  <Label text="Client port:" />
+                  <TextField />
+                  <Label text="Server port:" />
+                  <TextField />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </FlowPane>
+   </children>
 </AnchorPane>

@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import mj.project.configurations.AppConfiguration;
+import mj.project.controllers.MainViewController;
 import mj.project.exceptions.InvalidFxmlPathException;
 
 import java.net.URL;
@@ -20,7 +21,10 @@ public class MainWindow extends Application {
             throw new InvalidFxmlPathException(mainViewFxmlPath);
         }
 
-        Parent root = FXMLLoader.load(mainViewFxmlResource);
+        FXMLLoader fxmlLoader = new FXMLLoader(mainViewFxmlResource);
+        Parent root = fxmlLoader.load();
+        ((MainViewController)fxmlLoader.getController()).setStage(stage);
+
         Scene scene = new Scene(
                 root,
                 AppConfiguration.SCREEN_WIDTH,
