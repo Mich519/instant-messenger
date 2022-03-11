@@ -28,6 +28,10 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.crypto.tink/tink
     implementation group: 'com.google.crypto.tink', name: 'tink', version: '1.6.1'
 
+    // https://mvnrepository.com/artifact/commons-codec/commons-codec
+    implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
+
+
 }
 
 test {
