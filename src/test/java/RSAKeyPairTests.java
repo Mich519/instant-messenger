@@ -1,5 +1,6 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import mj.project.encryption.LocalKey;
 import mj.project.encryption.RSAKeyPair;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,21 +18,18 @@ public class RSAKeyPairTests {
     @Test
     void readAndWriteKeysToFileNotThrow() {
 
+        LocalKey localKey = new LocalKey("hellothere");
         RSAKeyPair rsaKeyPair = new RSAKeyPair();
         rsaKeyPair.createKeyPair();
 
         RSAKeyPair ref = new RSAKeyPair(rsaKeyPair);
 
-        Assertions.assertDoesNotThrow(() -> {
-            rsaKeyPair.saveKeyPairToFile(publicKeyPath, privateKeyPath);
-        });
+        Assertions.assertDoesNotThrow(() -> rsaKeyPair.saveKeyPairToFile(publicKeyPath, privateKeyPath, localKey));
 
-        Assertions.assertDoesNotThrow(() -> {
-            rsaKeyPair.loadKeyPair(publicKeyPath, privateKeyPath);
-        });
+        Assertions.assertDoesNotThrow(() -> rsaKeyPair.loadKeyPair(publicKeyPath, privateKeyPath, localKey));
 
-        Assertions.assertTrue(Arrays.toString(ref.getKeyPair().getPrivate().getEncoded()).equals(Arrays.toString(rsaKeyPair.getKeyPair().getPrivate().getEncoded())));
-        Assertions.assertTrue(Arrays.toString(ref.getKeyPair().getPublic().getEncoded()).equals(Arrays.toString(rsaKeyPair.getKeyPair().getPublic().getEncoded())));
+        assertEquals(Arrays.toString(ref.getKeyPair().getPrivate().getEncoded()), Arrays.toString(rsaKeyPair.getKeyPair().getPrivate().getEncoded()));
+        assertEquals(Arrays.toString(ref.getKeyPair().getPublic().getEncoded()), Arrays.toString(rsaKeyPair.getKeyPair().getPublic().getEncoded()));
     }
 
 }

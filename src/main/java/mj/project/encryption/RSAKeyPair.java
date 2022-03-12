@@ -1,5 +1,9 @@
 package mj.project.encryption;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -35,10 +39,12 @@ public class RSAKeyPair {
         }
     }
 
-    public void loadKeyPair(String publicKeyPath, String privateKeyPath) {
+    public void loadKeyPair(String publicKeyPath, String privateKeyPath, LocalKey localKey) {
         try {
-            byte[] publicKeyBytes = Files.readAllBytes(Paths.get(publicKeyPath));
-            byte[] privateKeyBytes = Files.readAllBytes(Paths.get(privateKeyPath));
+            byte[] publicKeyEncrypted = Files.readAllBytes(Paths.get(publicKeyPath));
+            byte[] privateKeyEncrypted = Files.readAllBytes(Paths.get(privateKeyPath));
+            byte[] publicKeyBytes = localKey.decrypt(publicKeyEncrypted);
+            byte[] privateKeyBytes = localKey.decrypt(privateKeyEncrypted);
             KeyFactory kf = KeyFactory.getInstance("RSA");
             PublicKey publicKey = kf.generatePublic(new X509EncodedKeySpec(publicKeyBytes));
             PrivateKey privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
@@ -49,12 +55,21 @@ public class RSAKeyPair {
         }
     }
 
-    public void saveKeyPairToFile(String publicKeyPath, String privateKeyPath) throws IOException {
+
+    public void saveKeyPairToFile(String publicKeyPath, String privateKeyPath, LocalKey localKey) {
+
         try (FileOutputStream fos = new FileOutputStream(publicKeyPath)) {
-            fos.write(keyPair.getPublic().getEncoded());
+            byte[] publicKeyEncrypted = localKey.encrypt(keyPair.getPublic().getEncoded());
+            fos.write(publicKeyEncrypted);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         try (FileOutputStream fos = new FileOutputStream(privateKeyPath)) {
-            fos.write(keyPair.getPrivate().getEncoded());
+            byte[] privateKeyEncrypted = localKey.encrypt(keyPair.getPrivate().getEncoded());
+            fos.write(privateKeyEncrypted);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
