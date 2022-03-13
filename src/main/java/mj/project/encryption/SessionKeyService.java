@@ -14,25 +14,13 @@ public class SessionKeyService {
     }
 
     public byte[] getEncoded(SecretKey sessionKey, PrivateKey privateKey) {
-        try {
-            Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.ENCRYPT_MODE, privateKey);
-            return cipher.doFinal(sessionKey.getEncoded());
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
-            e.printStackTrace();
-        }
-        throw new RuntimeException();
+        RSAService rsaService = new RSAService();
+        return rsaService.encode(sessionKey.getEncoded(), privateKey);
     }
 
     public SecretKey getDecoded(byte[] encodedSessionKey, PublicKey publicKey) {
-        try {
-            Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.DECRYPT_MODE, publicKey);
-            byte[] decodedSessionKey = cipher.doFinal(encodedSessionKey);
-            return new SecretKeySpec(decodedSessionKey, "AES");
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
-            e.printStackTrace();
-        }
-        throw new RuntimeException();
+        RSAService rsaService = new RSAService();
+        byte[] decodedSessionKey = rsaService.decode(encodedSessionKey, publicKey);
+        return new SecretKeySpec(decodedSessionKey, "AES");
     }
 }
