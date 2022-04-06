@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import mj.project.configurations.AppConfiguration;
+import mj.project.configurations.AppConfig;
 import mj.project.controllers.MainViewController;
 import mj.project.exceptions.InvalidFxmlPathException;
 
@@ -27,12 +27,12 @@ public class MainWindow extends Application {
 
         Scene scene = new Scene(
                 root,
-                AppConfiguration.SCREEN_WIDTH,
-                AppConfiguration.SCREEN_HEIGHT
+                AppConfig.getSCREEN_WIDTH(),
+                AppConfig.getSCREEN_HEIGHT()
         );
 
-        stage.setTitle(AppConfiguration.WINDOW_TITLE);
-        stage.setResizable(AppConfiguration.WINDOW_RESIZABLE);
+        stage.setTitle(AppConfig.getWINDOW_TITLE());
+        stage.setResizable(AppConfig.isWINDOW_RESIZABLE());
         stage.setScene(scene);
         stage.show();
     }

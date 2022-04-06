@@ -26,9 +26,15 @@ public class AESService {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             byte[] ivByte = new byte[cipher.getBlockSize()];
             IvParameterSpec ivParams = new IvParameterSpec(ivByte);
+
             cipher.init(Cipher.DECRYPT_MODE, key, ivParams);
             return cipher.doFinal(encryptedText);
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException | InvalidAlgorithmParameterException e) {
+        } catch (NoSuchAlgorithmException |
+                NoSuchPaddingException |
+                IllegalBlockSizeException |
+                BadPaddingException |
+                InvalidKeyException |
+                InvalidAlgorithmParameterException e) {
             e.printStackTrace();
         }
         throw new RuntimeException();

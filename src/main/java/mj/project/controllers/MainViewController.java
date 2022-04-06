@@ -1,13 +1,11 @@
 package mj.project.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
-import mj.project.events.ChooseFileEventHandler;
-import mj.project.events.OpenSettingsWindowEventHandler;
-import mj.project.events.SendMessageEventHandler;
+import mj.project.configurations.AppConfig;
+import mj.project.events.*;
+import mj.project.sockets.ServerSocketService;
 
 public class MainViewController {
 
@@ -26,12 +24,30 @@ public class MainViewController {
     MenuItem optionsMenuItem;
 
     @FXML
+    TextField receiverPortTextField;
+
+    @FXML
+    Button connectButton;
+
+    @FXML
+    Button listenButton;
+
+    @FXML
+    Label statusLabel;
+
+    @FXML
     public void initialize() {
+        // open server socket connection
+        ServerSocketService.getInstance().startListening(AppConfig.getMY_PORT());
 
         // initialize event handlers for controls
-        sendButton.setOnMouseClicked(new SendMessageEventHandler());
+        sendButton.setOnMouseClicked(new SendMessageEventHandler(textArea, statusLabel));
+        connectButton.setOnMouseClicked(new ConnectEventHandler(receiverPortTextField, statusLabel));
+        listenButton.setOnMouseClicked(new ListenEventHandler(statusLabel));
         attachFileButton.setOnMouseClicked(new ChooseFileEventHandler(stage));
         optionsMenuItem.setOnAction(new OpenSettingsWindowEventHandler());
+
+
     }
 
     public void setStage(Stage stage) {

@@ -13,8 +13,13 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+// todo: make every method static
 public class RSAService {
 
+    /**
+     * Generate new RSA key pair.
+     * @return RSA key pair
+     */
     public KeyPair createKeyPair() {
         try {
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
@@ -26,10 +31,26 @@ public class RSAService {
         throw new RuntimeException();
     }
 
-    public byte[] encode(byte[] input, PrivateKey privateKey) {
+    public static PublicKey createPublicKeyFromBytes(byte[] bytes) {
+        PublicKey publicKey = null;
+        try {
+            publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(bytes));
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return publicKey;
+    }
+
+    /**
+     * Encrypt input using RSA algorithm.
+     * @param input text to be encrypted
+     * @param receiverPublicKey receiver's public key
+     * @return encrypted text
+     */
+    public byte[] encrypt(byte[] input, PublicKey receiverPublicKey) {
         try {
             Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+            cipher.init(Cipher.ENCRYPT_MODE, receiverPublicKey);
             return cipher.doFinal(input);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
             e.printStackTrace();
@@ -37,10 +58,16 @@ public class RSAService {
         throw new RuntimeException();
     }
 
-    public byte[] decode(byte[] input, PublicKey publicKey) {
+    /**
+     * Decrypt input using RSA algorithm.
+     * @param input text to be decrypted
+     * @param receiverPrivateKey receiver's private key
+     * @return decrypted text
+     */
+    public byte[] decrypt(byte[] input, PrivateKey receiverPrivateKey) {
         try {
             Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.DECRYPT_MODE, publicKey);
+            cipher.init(Cipher.DECRYPT_MODE, receiverPrivateKey);
             return cipher.doFinal(input);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
             e.printStackTrace();
@@ -48,6 +75,13 @@ public class RSAService {
         throw new RuntimeException();
     }
 
+    /**
+     *
+     * @param publicKeyPath path to the public key file
+     * @param privateKeyPath path to the private key file
+     * @param password user password used for decrypting key pair
+     * @return RSA kay pair
+     */
     public KeyPair loadKeyPairFromFile(String publicKeyPath, String privateKeyPath, byte[] password) {
         try {
             LocalKeyService localKeyService = new LocalKeyService();
@@ -66,6 +100,13 @@ public class RSAService {
         throw new RuntimeException();
     }
 
+    /**
+     * Save RSA key pair to a file.
+     * @param keyPair key pair to be saved
+     * @param publicKeyPath destination path for public key
+     * @param privateKeyPath destination path for private key
+     * @param password user password used for encrypting key pair
+     */
     public void saveKeyPairToFile(KeyPair keyPair, String publicKeyPath, String privateKeyPath, byte[] password) {
         LocalKeyService localKeyService = new LocalKeyService();
 

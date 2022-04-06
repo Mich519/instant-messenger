@@ -4,7 +4,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import mj.project.configurations.AppConfiguration;
+import mj.project.configurations.AppConfig;
 
 public class ChooseFileEventHandler implements EventHandler<Event> {
 
@@ -21,7 +21,7 @@ public class ChooseFileEventHandler implements EventHandler<Event> {
     public void handle(Event event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Specific files", AppConfiguration.ALLOWED_FILE_EXTENSIONS);
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Specific files", AppConfig.getALLOWED_FILE_EXTENSIONS());
         fileChooser.getExtensionFilters().add(extensionFilter);
         fileChooser.showOpenDialog(parentStage);
     }

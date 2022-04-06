@@ -31,6 +31,11 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
 
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
 }
 
@@ -41,4 +46,10 @@ test {
 javafx {
     version = "17.0.1"
     modules = [ 'javafx.controls' , 'javafx.fxml']
+}
+
+jar {
+    manifest {
+            attributes('Main-Class' : 'mj.project.Main')
+    }
 }

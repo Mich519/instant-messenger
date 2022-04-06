@@ -6,7 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import mj.project.configurations.AppConfiguration;
+import mj.project.configurations.AppConfig;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,14 +35,14 @@ public class OpenSettingsWindowEventHandler implements EventHandler<ActionEvent>
         if(root != null) {
             scene = new Scene(
                     root,
-                    AppConfiguration.SCREEN_WIDTH,
-                    AppConfiguration.SCREEN_HEIGHT
+                    AppConfig.getSCREEN_WIDTH(),
+                    AppConfig.getSCREEN_HEIGHT()
             );
         }
 
         Stage stage = new Stage();
-        stage.setTitle(AppConfiguration.WINDOW_TITLE);
-        stage.setResizable(AppConfiguration.WINDOW_RESIZABLE);
+        stage.setTitle(AppConfig.getWINDOW_TITLE());
+        stage.setResizable(AppConfig.isWINDOW_RESIZABLE());
         stage.setScene(scene);
         stage.show();
 
