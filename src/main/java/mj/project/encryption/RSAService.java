@@ -31,7 +31,7 @@ public class RSAService {
         throw new RuntimeException();
     }
 
-    public static PublicKey createPublicKeyFromBytes(byte[] bytes) {
+    public PublicKey createPublicKeyFromBytes(byte[] bytes) {
         PublicKey publicKey = null;
         try {
             publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(bytes));

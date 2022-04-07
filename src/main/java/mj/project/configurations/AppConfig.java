@@ -4,8 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.nio.file.Path;
+import java.security.KeyPair;
+import java.security.PublicKey;
 import java.util.List;
 
+/**
+ * This class contains application properties
+ */
 @Getter
 @Setter
 public class AppConfig {
@@ -24,6 +29,11 @@ public class AppConfig {
     private String targetIp = "127.0.0.1";
     private int targetPort = 8080;
     private List<String> allowedFileExtensions = List.of("*.txt", "*.png", "*.pdf", "*.avi");
+    private PublicKey recipientPublicKey = null;
+    private KeyPair thisKeyPair = null;
+
+
+
     private AppConfig() {}
 
     public static AppConfig getInstance(){

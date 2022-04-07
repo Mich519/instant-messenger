@@ -37,9 +37,6 @@ public class MainViewController {
 
     @FXML
     public void initialize() {
-        // open server socket connection
-        ServerSocketService.getInstance().startListening(AppConfig.getInstance().getMyPort());
-
         // initialize event handlers for controls
         sendButton.setOnMouseClicked(new SendMessageEventHandler(textArea, statusLabel));
         connectButton.setOnMouseClicked(new ConnectEventHandler(receiverPortTextField, statusLabel));

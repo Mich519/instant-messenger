@@ -8,8 +8,10 @@ import mj.project.configurations.AppConfig;
 import mj.project.encryption.RSAService;
 import mj.project.exceptions.PortRangeException;
 import mj.project.sockets.ClientSocketService;
+import mj.project.sockets.PacketType;
 
 import java.io.IOException;
+import java.security.KeyPair;
 
 public class ConnectEventHandler implements EventHandler<Event> {
 
@@ -28,18 +30,12 @@ public class ConnectEventHandler implements EventHandler<Event> {
             if (targetPort < 0 || targetPort > 65535) {
                 throw new PortRangeException();
             }
-            // connect with a host
+            // connect with a server
             ClientSocketService.getInstance().startConnection(AppConfig.getInstance().getTargetIp(), targetPort);
-
-            // send public key to the reciever
             RSAService rsaService = new RSAService();
-
-
-            rsaService.createKeyPair(); // todo: change this
-           // rsaService.
-            //ClientSocketService.getInstance().sendMessage();
-
-
+            KeyPair keyPair = rsaService.createKeyPair();
+            byte[] encodedPublicKey = keyPair.getPublic().getEncoded();
+            ClientSocketService.getInstance().sendMessage(encodedPublicKey, PacketType.PUBLIC_KEY);
 
         } catch (NumberFormatException e) {
             statusLabel.setText("Error: Port number contains invalid characters");
