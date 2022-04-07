@@ -35,14 +35,14 @@ public class OpenSettingsWindowEventHandler implements EventHandler<ActionEvent>
         if(root != null) {
             scene = new Scene(
                     root,
-                    AppConfig.getSCREEN_WIDTH(),
-                    AppConfig.getSCREEN_HEIGHT()
+                    AppConfig.getInstance().getScreenWidth(),
+                    AppConfig.getInstance().getScreenHeight()
             );
         }
 
         Stage stage = new Stage();
-        stage.setTitle(AppConfig.getWINDOW_TITLE());
-        stage.setResizable(AppConfig.isWINDOW_RESIZABLE());
+        stage.setTitle(AppConfig.getInstance().getWindowTitle());
+        stage.setResizable(AppConfig.getInstance().isWindowResizable());
         stage.setScene(scene);
         stage.show();
 

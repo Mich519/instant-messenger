@@ -16,6 +16,6 @@ public class ListenEventHandler implements EventHandler<Event> {
 
     @Override
     public void handle(Event event) {
-        ServerSocketService.getInstance().startListening(AppConfig.getMY_PORT());
+        ServerSocketService.getInstance().startListening(AppConfig.getInstance().getMyPort());
     }
 }

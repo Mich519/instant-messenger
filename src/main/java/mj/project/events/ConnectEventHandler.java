@@ -29,7 +29,7 @@ public class ConnectEventHandler implements EventHandler<Event> {
                 throw new PortRangeException();
             }
             // connect with a host
-            ClientSocketService.getInstance().startConnection(AppConfig.getTARGET_IP(), targetPort);
+            ClientSocketService.getInstance().startConnection(AppConfig.getInstance().getTargetIp(), targetPort);
 
             // send public key to the reciever
             RSAService rsaService = new RSAService();

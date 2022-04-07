@@ -6,56 +6,31 @@ import lombok.Setter;
 import java.nio.file.Path;
 import java.util.List;
 
-
+@Getter
+@Setter
 public class AppConfig {
 
+    private static AppConfig APP_CONFIG_INSTANCE = new AppConfig();
+
+    private int screenWidth = 640;
+    private int screenHeight = 480;
+    private String windowTitle = "BSK Project";
+    private boolean windowResizable = false;
+    private String configFilename = "config_file";
+    private String configFilePath = "bsk-config.json";
+    private Path privateKeyPath = Path.of("/");
+    private Path publicKeyPath = Path.of("/");
+    private int myPort = 8080;
+    private String targetIp = "127.0.0.1";
+    private int targetPort = 8080;
+    private List<String> allowedFileExtensions = List.of("*.txt", "*.png", "*.pdf", "*.avi");
     private AppConfig() {}
 
-    @Getter
-    @Setter
-    private static int SCREEN_WIDTH = 640;
+    public static AppConfig getInstance(){
+        return APP_CONFIG_INSTANCE;
+    }
 
-    @Getter
-    @Setter
-    private static int SCREEN_HEIGHT = 480;
-
-    @Getter
-    @Setter
-    private static String WINDOW_TITLE = "BSK Project";
-
-    @Getter
-    @Setter
-    private static boolean WINDOW_RESIZABLE = false;
-
-    @Getter
-    @Setter
-    private static String CONFIG_FILENAME = "config_file";
-
-    @Getter
-    @Setter
-    private static Path CONFIG_FILE_PATH = Path.of("/");
-
-    @Getter
-    @Setter
-    private static Path PRIVATE_KEY_PATH = Path.of("/");
-
-    @Getter
-    @Setter
-    private static Path PUBLIC_KEY_PATH = Path.of("/");
-
-    @Getter
-    @Setter
-    private static int MY_PORT = 8080;
-
-    @Getter
-    @Setter
-    private static String TARGET_IP = "127.0.0.1";
-
-    @Getter
-    @Setter
-    private static int TARGET_PORT = 8080;
-
-    @Getter
-    @Setter
-    private static List<String> ALLOWED_FILE_EXTENSIONS = List.of("*.txt", "*.png", "*.pdf", "*.avi");
+    public static void setInstance(AppConfig appConfig){
+        APP_CONFIG_INSTANCE = appConfig;
+    }
 }

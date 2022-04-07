@@ -27,12 +27,12 @@ public class MainWindow extends Application {
 
         Scene scene = new Scene(
                 root,
-                AppConfig.getSCREEN_WIDTH(),
-                AppConfig.getSCREEN_HEIGHT()
+                AppConfig.getInstance().getScreenWidth(),
+                AppConfig.getInstance().getScreenHeight()
         );
 
-        stage.setTitle(AppConfig.getWINDOW_TITLE());
-        stage.setResizable(AppConfig.isWINDOW_RESIZABLE());
+        stage.setTitle(AppConfig.getInstance().getWindowTitle());
+        stage.setResizable(AppConfig.getInstance().isWindowResizable());
         stage.setScene(scene);
         stage.show();
     }

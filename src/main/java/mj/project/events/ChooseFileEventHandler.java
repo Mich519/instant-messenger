@@ -21,7 +21,7 @@ public class ChooseFileEventHandler implements EventHandler<Event> {
     public void handle(Event event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Specific files", AppConfig.getALLOWED_FILE_EXTENSIONS());
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Specific files", AppConfig.getInstance().getAllowedFileExtensions());
         fileChooser.getExtensionFilters().add(extensionFilter);
         fileChooser.showOpenDialog(parentStage);
     }
