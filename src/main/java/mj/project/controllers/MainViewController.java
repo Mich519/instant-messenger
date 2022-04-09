@@ -5,7 +5,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import mj.project.configurations.AppConfig;
 import mj.project.events.*;
-import mj.project.sockets.ServerSocketService;
+import mj.project.networking.ServerSocketService;
 
 public class MainViewController {
 
@@ -38,6 +38,7 @@ public class MainViewController {
     @FXML
     public void initialize() {
         // initialize event handlers for controls
+
         sendButton.setOnMouseClicked(new SendMessageEventHandler(textArea, statusLabel));
         connectButton.setOnMouseClicked(new ConnectEventHandler(receiverPortTextField, statusLabel));
         listenButton.setOnMouseClicked(new ListenEventHandler(statusLabel));

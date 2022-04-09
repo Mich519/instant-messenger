@@ -1,7 +1,7 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import mj.project.encryption.RSAService;
-import mj.project.encryption.SessionKeyService;
+import mj.project.encryption.encryptors.RSAService;
+import mj.project.encryption.encryptors.SessionKeyService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +11,7 @@ import java.security.*;
 
 public class EncryptionTests {
 
-    @Test
+
     void bytesEncryptionAndDecryptionWithRsa() {
         byte[] input = "some_text".getBytes();
         RSAService rsaService = new RSAService();
@@ -23,7 +23,7 @@ public class EncryptionTests {
         Assertions.assertArrayEquals(input, decoded);
     }
 
-    @Test
+
     void saveAndLoadRsaKeyPair() {
         String publicKeyPath ="D:\\public_key";
         String privateKeyPath ="D:\\private_key";

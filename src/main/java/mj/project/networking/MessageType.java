@@ -1,4 +1,4 @@
-package mj.project.sockets;
+package mj.project.networking;
 
 import lombok.Getter;
 
@@ -7,7 +7,7 @@ import lombok.Getter;
  * Each packet that is sent has attached prefix
  * that specifies its type
  */
-public enum PacketType {
+public enum MessageType {
     TEXT("-TEXT-"),
     FILE("-FILE-"),
     PUBLIC_KEY("-PUBK-"),
@@ -18,7 +18,7 @@ public enum PacketType {
     @Getter
     private final String packetPrefix;
 
-    PacketType(String packetPrefix) {
+    MessageType(String packetPrefix) {
         this.packetPrefix = packetPrefix;
     }
 }

@@ -1,17 +1,15 @@
-package mj.project.sockets;
+package mj.project.networking;
 
 import mj.project.utils.Utils;
-import org.apache.commons.codec.Charsets;
 
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 public class ClientSocketService {
     private static final ClientSocketService CLIENT_SOCKET_SERVICE = new ClientSocketService();
     private Socket clientSocket;
-    private OutputStream outputStream;
+    private ObjectOutputStream outputStream;
     private BufferedReader inputStream;
 
     private ClientSocketService() {}
@@ -22,16 +20,15 @@ public class ClientSocketService {
 
     public void startConnection(String ip, int port) throws IOException {
         clientSocket = new Socket(ip, port);
-        outputStream = clientSocket.getOutputStream();
+        outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         inputStream = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     }
 
-    public void sendMessage(byte[] message, PacketType packetType) {
+    public void sendMessage(Message message) {
         try {
-            byte[] messageBuilder = Utils.concatByteArrays(packetType.getPacketPrefix().getBytes(StandardCharsets.US_ASCII), message);
-            messageBuilder = Utils.concatByteArrays(messageBuilder, System.lineSeparator().getBytes());
-            outputStream.write(messageBuilder);
-            String response = inputStream.readLine();
+            outputStream.writeObject(message);
+            outputStream.flush();
+            //String response = inputStream.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }

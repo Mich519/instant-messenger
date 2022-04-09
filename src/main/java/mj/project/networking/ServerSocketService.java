@@ -1,4 +1,4 @@
-package mj.project.sockets;
+package mj.project.networking;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

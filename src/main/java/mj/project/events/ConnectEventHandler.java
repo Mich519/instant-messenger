@@ -5,10 +5,11 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import mj.project.configurations.AppConfig;
-import mj.project.encryption.RSAService;
+import mj.project.encryption.encryptors.RSAService;
 import mj.project.exceptions.PortRangeException;
-import mj.project.sockets.ClientSocketService;
-import mj.project.sockets.PacketType;
+import mj.project.networking.ClientSocketService;
+import mj.project.networking.Message;
+import mj.project.networking.MessageType;
 
 import java.io.IOException;
 import java.security.KeyPair;
@@ -35,7 +36,8 @@ public class ConnectEventHandler implements EventHandler<Event> {
             RSAService rsaService = new RSAService();
             KeyPair keyPair = rsaService.createKeyPair();
             byte[] encodedPublicKey = keyPair.getPublic().getEncoded();
-            ClientSocketService.getInstance().sendMessage(encodedPublicKey, PacketType.PUBLIC_KEY);
+            Message message = new Message(encodedPublicKey, MessageType.PUBLIC_KEY);
+            ClientSocketService.getInstance().sendMessage(message);
 
         } catch (NumberFormatException e) {
             statusLabel.setText("Error: Port number contains invalid characters");

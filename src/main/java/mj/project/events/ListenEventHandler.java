@@ -4,7 +4,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import mj.project.configurations.AppConfig;
-import mj.project.sockets.ServerSocketService;
+import mj.project.networking.ServerSocketService;
 
 public class ListenEventHandler implements EventHandler<Event> {
 

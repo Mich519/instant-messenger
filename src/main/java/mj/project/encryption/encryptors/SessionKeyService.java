@@ -1,4 +1,7 @@
-package mj.project.encryption;
+package mj.project.encryption.encryptors;
+
+import mj.project.encryption.encryptors.RSAService;
+import mj.project.encryption.encryptors.factories.SessionKeyFactory;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
@@ -6,42 +9,27 @@ import java.security.*;
 
 public class SessionKeyService {
 
-    /**
-     * Create session key using pseudo-random generator
-     * @return session key
-     */
+    private final SessionKeyFactory sessionKeyFactory;
+
+    public SessionKeyService() {
+        this.sessionKeyFactory = new SessionKeyFactory();
+    }
+
     public SecretKey createSessionKey() {
         byte[] randomBytes = new byte[32];
         SecureRandom random = new SecureRandom();
         random.nextBytes(randomBytes);
-        return new SecretKeySpec(randomBytes, "AES");
+        return sessionKeyFactory.create(randomBytes);
     }
 
-    /**
-     * Encrypt session key using receiver's public key
-     * @param sessionKey to be encrypted
-     * @param publicKey receiver's public key
-     * @return encrypted session key bytes
-     */
     public byte[] encryptSessionKey(SecretKey sessionKey, PublicKey publicKey) {
         RSAService rsaService = new RSAService();
         return rsaService.encrypt(sessionKey.getEncoded(), publicKey);
     }
 
-    /**
-     * Decrypt session key using this private key
-     * @param encryptedSessionKey encrypted session key bytes to be decrypted
-     * @param privateKey this private key
-     * @return decrypted session key
-     */
     public SecretKey decodeSessionKey(byte[] encryptedSessionKey, PrivateKey privateKey) {
         RSAService rsaService = new RSAService();
         byte[] decodedSessionKey = rsaService.decrypt(encryptedSessionKey, privateKey);
         return new SecretKeySpec(decodedSessionKey, "AES");
-    }
-
-    public byte[] encodePacket(SecretKey sessionKey) {
-        //todo
-        return null;
     }
 }
