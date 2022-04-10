@@ -74,7 +74,5 @@ public class ServerSocketListenTask extends Task<Void> {
         stopped = true;
         closeStreams();
     }
-
-
 }
 

@@ -1,8 +1,8 @@
 package mj.project.encryption.encryptors;
 
-import mj.project.encryption.encryptors.factories.KeyFactory;
-import mj.project.encryption.encryptors.factories.RSAPrivateKeyFactory;
-import mj.project.encryption.encryptors.factories.RSAPublicKeyFactory;
+import mj.project.encryption.factories.KeyFactory;
+import mj.project.encryption.factories.RSAPrivateKeyFactory;
+import mj.project.encryption.factories.RSAPublicKeyFactory;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -13,7 +13,7 @@ import java.security.*;
 public class RSAEncryptor implements Encryptor {
 
     private static final String ALGORITHM = "RSA";
-    private final mj.project.encryption.encryptors.factories.KeyFactory<PublicKey> publicKeyFactory;
+    private final KeyFactory<PublicKey> publicKeyFactory;
     private final KeyFactory<PrivateKey> privateKeyFactory;
 
     public RSAEncryptor() {

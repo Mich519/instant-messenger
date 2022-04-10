@@ -1,4 +1,4 @@
-package mj.project.encryption.encryptors.factories;
+package mj.project.encryption.factories;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;

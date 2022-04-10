@@ -46,6 +46,9 @@ public class MainViewController {
     VBox messageContainer;
 
     @FXML
+    Button sendSessionKeyButton;
+
+    @FXML
     public void initialize() {
         Controllers.setMainViewController(this);
 
@@ -61,12 +64,17 @@ public class MainViewController {
         stopButton.setOnMouseClicked(new StopEventHandler());
         attachFileButton.setOnMouseClicked(new ChooseFileEventHandler(stage));
         optionsMenuItem.setOnAction(new OpenSettingsWindowEventHandler());
+
+        sendSessionKeyButton.setOnMouseClicked(new SendSessionKeyEventHandler());
     }
 
+    public void addMessage(byte[] messageBytes) {
+        Label messageLabel = new Label(new String(messageBytes, StandardCharsets.US_ASCII));
+        messageContainer.getChildren().add(messageLabel);
+    }
     public void addMessage(Message message) {
         String textContent = new String(message.getContent(), StandardCharsets.UTF_8);
         String textNickname = new String(message.getSenderName(), StandardCharsets.UTF_8);
-
         Label messageLabel = new Label(textNickname + ": " + textContent);
         messageContainer.getChildren().add(messageLabel);
     }

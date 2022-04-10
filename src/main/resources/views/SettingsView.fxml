@@ -16,8 +16,8 @@
             <VBox prefHeight="200.0" prefWidth="222.0">
                <children>
                   <Label text="Block cypher " />
-                  <RadioButton mnemonicParsing="false" text="ECB" />
-                  <RadioButton mnemonicParsing="false" text="CBC" />
+                  <RadioButton fx:id="ecbRadioButton" mnemonicParsing="false" text="ECB" />
+                  <RadioButton fx:id="cbcRadioButton" mnemonicParsing="false" text="CBC" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="178.0">

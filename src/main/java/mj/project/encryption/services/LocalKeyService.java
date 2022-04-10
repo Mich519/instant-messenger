@@ -1,4 +1,4 @@
-package mj.project.encryption.encryptors;
+package mj.project.encryption.services;
 
 import mj.project.encryption.encryptors.AESEncryptor;
 import mj.project.encryption.encryptors.Encryptor;

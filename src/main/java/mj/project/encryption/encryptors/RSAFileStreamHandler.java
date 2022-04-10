@@ -1,8 +1,8 @@
 package mj.project.encryption.encryptors;
 
-import mj.project.encryption.encryptors.factories.RSAKeyPairFactory;
-import mj.project.encryption.encryptors.factories.RSAPrivateKeyFactory;
-import mj.project.encryption.encryptors.factories.RSAPublicKeyFactory;
+import mj.project.encryption.factories.RSAPrivateKeyFactory;
+import mj.project.encryption.factories.RSAPublicKeyFactory;
+import mj.project.encryption.services.LocalKeyService;
 import mj.project.utils.io.ByteFileReader;
 import mj.project.utils.io.ByteFileWriter;
 

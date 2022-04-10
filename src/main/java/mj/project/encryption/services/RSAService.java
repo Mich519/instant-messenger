@@ -1,6 +1,9 @@
-package mj.project.encryption.encryptors;
+package mj.project.encryption.services;
 
-import mj.project.encryption.encryptors.factories.RSAKeyPairFactory;
+import mj.project.encryption.encryptors.Encryptor;
+import mj.project.encryption.encryptors.RSAEncryptor;
+import mj.project.encryption.encryptors.RSAFileStreamHandler;
+import mj.project.encryption.factories.RSAKeyPairFactory;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;
@@ -13,6 +16,7 @@ public class RSAService {
     private final RSAFileStreamHandler rsaFileStreamHandler;
 
     public RSAService() {
+
         this.rsaEncryptor = new RSAEncryptor();
         this.rsaKeyPairFactory = new RSAKeyPairFactory();
         this.rsaFileStreamHandler = new RSAFileStreamHandler();

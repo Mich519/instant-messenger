@@ -1,5 +1,6 @@
 package mj.project.encryption.encryptors;
 
+import mj.project.configurations.AppConfig;
 import mj.project.encryption.encryptors.Encryptor;
 
 import javax.crypto.*;
@@ -11,7 +12,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class AESEncryptor implements Encryptor {
 
-    private static final String CIPHER_TYPE = "AES/CBC/PKCS5Padding";
+    //todo: allow changing block cipher (CBC/ECB)
+    private static final String CIPHER_TYPE = "AES/"+ AppConfig.getInstance().getBlockCipher() +"/PKCS5Padding";
     private static final String ALGORITHM = "AES";
 
     private byte[] doOperation(byte[] input, byte[] keyBytes, int operationMode) {

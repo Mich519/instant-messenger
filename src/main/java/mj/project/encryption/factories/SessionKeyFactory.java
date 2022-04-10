@@ -1,6 +1,4 @@
-package mj.project.encryption.encryptors.factories;
-
-import mj.project.encryption.encryptors.factories.KeyFactory;
+package mj.project.encryption.factories;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;

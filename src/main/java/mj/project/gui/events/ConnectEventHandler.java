@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import lombok.AllArgsConstructor;
 import mj.project.configurations.AppConfig;
-import mj.project.encryption.encryptors.RSAService;
+import mj.project.encryption.services.RSAService;
 import mj.project.exceptions.PortRangeException;
 import mj.project.networking.ClientSocketService;
 import mj.project.networking.message.Message;
@@ -34,6 +34,8 @@ public class ConnectEventHandler implements EventHandler<Event> {
             RSAService rsaService = new RSAService();
             KeyPair keyPair = rsaService.createKeyPair();
             byte[] encodedPublicKey = keyPair.getPublic().getEncoded();
+            AppConfig.getInstance().setThisKeyPair(keyPair);
+
             Message message = Message.builder()
                     .senderName(AppConfig.getInstance().getMyNickName().getBytes(StandardCharsets.UTF_8))
                     .content(encodedPublicKey)

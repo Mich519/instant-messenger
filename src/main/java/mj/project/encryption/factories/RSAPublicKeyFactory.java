@@ -1,13 +1,10 @@
-package mj.project.encryption.encryptors.factories;
+package mj.project.encryption.factories;
 
-import mj.project.encryption.encryptors.factories.KeyFactory;
 import mj.project.exceptions.PublicKeyCreateException;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
-import java.security.spec.EncodedKeySpec;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
+import java.security.spec.*;
 
 public class RSAPublicKeyFactory implements KeyFactory<PublicKey> {
 

@@ -1,9 +1,11 @@
 package mj.project.configurations;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Synchronized;
 
+import javax.crypto.spec.SecretKeySpec;
 import java.nio.file.Path;
 import java.security.KeyPair;
 import java.security.PublicKey;
@@ -36,7 +38,12 @@ public class AppConfig {
     private int targetPort = 8080;
     private List<String> allowedFileExtensions = List.of("*.txt", "*.png", "*.pdf", "*.avi");
     volatile private PublicKey recipientPublicKey = null;
+
+    @JsonIgnore
+    volatile private SecretKeySpec sessionKey = null;
+
     private KeyPair thisKeyPair = null;
+    private String blockCipher = "CBC";
 
     private AppConfig() {}
 

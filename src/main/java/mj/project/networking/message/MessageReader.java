@@ -2,9 +2,12 @@ package mj.project.networking.message;
 
 import javafx.application.Platform;
 import mj.project.configurations.AppConfig;
+import mj.project.encryption.services.SessionKeyService;
 import mj.project.gui.controllers.Controllers;
-import mj.project.encryption.encryptors.factories.RSAPublicKeyFactory;
+import mj.project.encryption.factories.RSAPublicKeyFactory;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 
 public class MessageReader {
@@ -19,6 +22,14 @@ public class MessageReader {
 
         } else if (messageType.equals(MessageType.TEXT)) {
             Platform.runLater(() -> Controllers.getMainViewController().addMessage(message));
+        } else if (messageType.equals(MessageType.SESSION_KEY)) {
+            SessionKeyService sessionKeyService = new SessionKeyService();
+            SecretKey decodedSessionKey = sessionKeyService.decodeSessionKey(message.getContent(), AppConfig.getInstance().getThisKeyPair().getPrivate());
+            Message m = Message.builder()
+                    .senderName(AppConfig.getInstance().getMyNickName().getBytes(StandardCharsets.UTF_8))
+                    .content(decodedSessionKey.getEncoded())
+                    .build();
+            Platform.runLater(() -> Controllers.getMainViewController().addMessage(m));
         }
     }
 }
