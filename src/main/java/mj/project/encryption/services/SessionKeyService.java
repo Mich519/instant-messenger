@@ -5,16 +5,22 @@ import mj.project.encryption.factories.SessionKeyFactory;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
+import javax.inject.Inject;
 import java.security.*;
 
 public class SessionKeyService {
 
     private final SessionKeyFactory sessionKeyFactory;
     private final SessionKeyEncryptor sessionKeyEncryptor;
+    private final RSAService rsaService;
 
-    public SessionKeyService() {
-        this.sessionKeyFactory = new SessionKeyFactory();
-        this.sessionKeyEncryptor = new SessionKeyEncryptor();
+    @Inject
+    public SessionKeyService(SessionKeyFactory sessionKeyFactory,
+                             SessionKeyEncryptor sessionKeyEncryptor,
+                             RSAService rsaService) {
+        this.sessionKeyFactory = sessionKeyFactory;
+        this.sessionKeyEncryptor = sessionKeyEncryptor;
+        this.rsaService = rsaService;
     }
 
     public SecretKey createSessionKey() {
@@ -33,12 +39,11 @@ public class SessionKeyService {
     }
 
     public byte[] encryptSessionKey(SecretKey sessionKey, PublicKey publicKey) {
-        RSAService rsaService = new RSAService();
+
         return rsaService.encrypt(sessionKey.getEncoded(), publicKey);
     }
 
     public SecretKey decodeSessionKey(byte[] encryptedSessionKey, PrivateKey privateKey) {
-        RSAService rsaService = new RSAService();
         byte[] decodedSessionKey = rsaService.decrypt(encryptedSessionKey, privateKey);
         return new SecretKeySpec(decodedSessionKey, "AES");
     }

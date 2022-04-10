@@ -11,13 +11,21 @@ import mj.project.networking.ClientSocketService;
 import mj.project.networking.message.Message;
 import mj.project.networking.message.MessageType;
 
+import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 
-@AllArgsConstructor
 public class SendMessageEventHandler implements EventHandler<Event> {
 
     private final TextArea textArea;
     private final Label statusLabel;
+    private final SessionKeyService sessionKeyService;
+
+    @Inject
+    public SendMessageEventHandler(TextArea textArea, Label statusLabel, SessionKeyService sessionKeyService) {
+        this.textArea = textArea;
+        this.statusLabel = statusLabel;
+        this.sessionKeyService = sessionKeyService;
+    }
 
     @Override
     public void handle(Event event) {
@@ -25,7 +33,6 @@ public class SendMessageEventHandler implements EventHandler<Event> {
         if(AppConfig.getInstance().getSessionKey() == null)
             throw new RuntimeException("Session key not exchanged");
         String messageContent = textArea.getText();
-        SessionKeyService sessionKeyService = new SessionKeyService();
         byte[] messageContentEncoded = sessionKeyService.encrypt(messageContent.getBytes(StandardCharsets.UTF_8), AppConfig.getInstance().getSessionKey());
         Message message = Message.builder()
                 .senderName(AppConfig.getInstance().getMyNickName().getBytes(StandardCharsets.UTF_8))

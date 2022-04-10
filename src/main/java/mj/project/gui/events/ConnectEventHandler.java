@@ -12,15 +12,23 @@ import mj.project.networking.ClientSocketService;
 import mj.project.networking.message.Message;
 import mj.project.networking.message.MessageType;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 
-@AllArgsConstructor
 public class ConnectEventHandler implements EventHandler<Event> {
 
     private final TextField portTextField;
     private final Label statusLabel;
+    private final RSAService rsaService;
+
+    @Inject
+    public ConnectEventHandler(TextField portTextField, Label statusLabel, RSAService rsaService) {
+        this.portTextField = portTextField;
+        this.statusLabel = statusLabel;
+        this.rsaService = rsaService;
+    }
 
     @Override
     public void handle(Event event) {
@@ -31,7 +39,6 @@ public class ConnectEventHandler implements EventHandler<Event> {
             }
             // connect with a server
             ClientSocketService.getInstance().startConnection(AppConfig.getInstance().getTargetIp(), targetPort);
-            RSAService rsaService = new RSAService();
             KeyPair keyPair = rsaService.createKeyPair();
             byte[] encodedPublicKey = keyPair.getPublic().getEncoded();
             AppConfig.getInstance().setThisKeyPair(keyPair);

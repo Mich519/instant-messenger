@@ -10,10 +10,18 @@ import mj.project.networking.message.Message;
 import mj.project.networking.message.MessageType;
 
 import javax.crypto.SecretKey;
+import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 
 public class SendSessionKeyEventHandler implements EventHandler<Event> {
+
+    private final SessionKeyService sessionKeyService;
+
+    @Inject
+    public SendSessionKeyEventHandler(SessionKeyService sessionKeyService) {
+        this.sessionKeyService = sessionKeyService;
+    }
 
     @Override
     public void handle(Event event) {
@@ -21,7 +29,6 @@ public class SendSessionKeyEventHandler implements EventHandler<Event> {
         if(recipientPublicKey == null) {
             throw new RuntimeException("Recipient's key not exists");
         }
-        SessionKeyService sessionKeyService = new SessionKeyService();
         SecretKey secretKey = sessionKeyService.createSessionKey();
         byte[] elo = secretKey.getEncoded();
         byte[] encryptedSessionKey = sessionKeyService.encryptSessionKey(secretKey, recipientPublicKey);

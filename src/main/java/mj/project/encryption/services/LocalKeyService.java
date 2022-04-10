@@ -5,9 +5,11 @@ import mj.project.encryption.encryptors.Encryptor;
 import mj.project.encryption.hashers.Hasher;
 import mj.project.encryption.hashers.SHA256Hasher;
 
+import javax.inject.Inject;
+
 public class LocalKeyService {
 
-    private final Hasher passwordHasher;
+    @Inject private final Hasher passwordHasher;
     private final Encryptor encryptor;
 
     public LocalKeyService() {

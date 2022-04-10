@@ -6,6 +6,7 @@ import mj.project.gui.controllers.Controllers;
 import mj.project.networking.message.Message;
 import mj.project.networking.message.MessageReader;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
@@ -17,7 +18,13 @@ public class ServerSocketListenTask extends Task<Void> {
     private Socket clientSocket;
     private PrintWriter out;
     private ObjectInputStream in;
+    private final MessageReader messageReader;
     private volatile boolean stopped = false;
+
+    @Inject
+    public ServerSocketListenTask(MessageReader messageReader) {
+        this.messageReader = messageReader;
+    }
 
     private void openStreams() {
         try {
@@ -53,7 +60,6 @@ public class ServerSocketListenTask extends Task<Void> {
         try {
             Object o = in.readObject();
             Message m = (Message) o;
-            MessageReader messageReader = new MessageReader();
             messageReader.read(m);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

@@ -7,10 +7,18 @@ import mj.project.gui.controllers.Controllers;
 import mj.project.encryption.factories.RSAPublicKeyFactory;
 
 import javax.crypto.SecretKey;
+import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 
 public class MessageReader {
+
+    private final SessionKeyService sessionKeyService;
+
+    @Inject
+    public MessageReader(SessionKeyService sessionKeyService) {
+        this.sessionKeyService = sessionKeyService;
+    }
 
     public void read(Message message) {
         MessageType messageType = message.getMessageType();
@@ -23,7 +31,6 @@ public class MessageReader {
         } else if (messageType.equals(MessageType.TEXT)) {
             Platform.runLater(() -> Controllers.getMainViewController().addMessage(message));
         } else if (messageType.equals(MessageType.SESSION_KEY)) {
-            SessionKeyService sessionKeyService = new SessionKeyService();
             SecretKey decodedSessionKey = sessionKeyService.decodeSessionKey(message.getContent(), AppConfig.getInstance().getThisKeyPair().getPrivate());
             Message m = Message.builder()
                     .senderName(AppConfig.getInstance().getMyNickName().getBytes(StandardCharsets.UTF_8))

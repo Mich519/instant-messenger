@@ -5,6 +5,7 @@ import mj.project.encryption.encryptors.RSAEncryptor;
 import mj.project.encryption.encryptors.RSAFileStreamHandler;
 import mj.project.encryption.factories.RSAKeyPairFactory;
 
+import javax.inject.Inject;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -15,12 +16,20 @@ public class RSAService {
     private final RSAKeyPairFactory rsaKeyPairFactory;
     private final RSAFileStreamHandler rsaFileStreamHandler;
 
-    public RSAService() {
+    @Inject
+    public RSAService(Encryptor rsaEncryptor,
+                      RSAKeyPairFactory rsaKeyPairFactory,
+                      RSAFileStreamHandler rsaFileStreamHandler) {
+        this.rsaEncryptor = rsaEncryptor;
+        this.rsaKeyPairFactory = rsaKeyPairFactory;
+        this.rsaFileStreamHandler = rsaFileStreamHandler;
+    }
 
+    /*public RSAService() {
         this.rsaEncryptor = new RSAEncryptor();
         this.rsaKeyPairFactory = new RSAKeyPairFactory();
         this.rsaFileStreamHandler = new RSAFileStreamHandler();
-    }
+    }*/
 
     public byte[] encrypt(byte[] input, PublicKey publicKey) {
         return rsaEncryptor.encrypt(input, publicKey.getEncoded());

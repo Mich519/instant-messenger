@@ -1,22 +1,19 @@
 package mj.project.networking;
 
+import javax.inject.Inject;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ServerSocketService {
+    private final ServerSocketListenTask serverSocketListenTask;
 
-    private static final ServerSocketService SERVER_SOCKET_SERVICE = new ServerSocketService();
-    private ServerSocketListenTask serverSocketListenTask;
-
-    private ServerSocketService() {}
-
-    public static ServerSocketService getInstance() {
-        return SERVER_SOCKET_SERVICE;
+    @Inject
+    private ServerSocketService(ServerSocketListenTask serverSocketListenTask) {
+        this.serverSocketListenTask = serverSocketListenTask;
     }
 
     public void startListening() {
         ExecutorService listenTaskExecutor = Executors.newSingleThreadExecutor();
-        serverSocketListenTask = new ServerSocketListenTask();
         listenTaskExecutor.submit(serverSocketListenTask);
     }
 

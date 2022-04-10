@@ -2,20 +2,24 @@ package mj.project.configurations;
 
 import mj.project.networking.ServerSocketService;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
 public class AppInitializer {
     private final AppConfigSerializer appConfigSerializer;
+    private final ServerSocketService serverSocketService;
 
-    public AppInitializer() {
-        this.appConfigSerializer = new AppConfigSerializer();
+    @Inject
+    public AppInitializer(AppConfigSerializer appConfigSerializer, ServerSocketService serverSocketService) {
+        this.appConfigSerializer = appConfigSerializer;
+        this.serverSocketService = serverSocketService;
     }
 
     public void init() {
 
         try {
             appConfigSerializer.loadSettingsFromFile();
-            ServerSocketService.getInstance().startListening();
+            serverSocketService.startListening();
         } catch (IOException e) {
             try {
                 appConfigSerializer.saveSettingsToFile();

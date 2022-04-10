@@ -9,6 +9,7 @@ import mj.project.gui.events.*;
 import mj.project.networking.ServerSocketService;
 import mj.project.networking.message.Message;
 
+import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 
 public class MainViewController {
@@ -48,24 +49,41 @@ public class MainViewController {
     @FXML
     Button sendSessionKeyButton;
 
+    @Inject
+    private SendMessageEventHandler sendMessageEventHandler;
+
+    @Inject
+    private ConnectEventHandler connectEventHandler;
+
+    @Inject
+    private SendSessionKeyEventHandler sendSessionKeyEventHandler;
+
+    @Inject
+    private AppInitializer appInitializer;
+
+    @Inject
+    private ListenEventHandler listenEventHandler;
+
+    @Inject
+    private StopEventHandler stopEventHandler;
+
     @FXML
     public void initialize() {
         Controllers.setMainViewController(this);
 
         // initial stuff
-        AppInitializer appInitializer = new AppInitializer();
         appInitializer.init();
 
 
         // initialize event handlers for controls
-        sendButton.setOnMouseClicked(new SendMessageEventHandler(textArea, statusLabel));
-        connectButton.setOnMouseClicked(new ConnectEventHandler(receiverPortTextField, statusLabel));
-        listenButton.setOnMouseClicked(new ListenEventHandler(statusLabel));
-        stopButton.setOnMouseClicked(new StopEventHandler());
+        sendButton.setOnMouseClicked(sendMessageEventHandler);
+        connectButton.setOnMouseClicked(connectEventHandler);
+        listenButton.setOnMouseClicked(listenEventHandler);
+        stopButton.setOnMouseClicked(stopEventHandler);
         attachFileButton.setOnMouseClicked(new ChooseFileEventHandler(stage));
         optionsMenuItem.setOnAction(new OpenSettingsWindowEventHandler());
 
-        sendSessionKeyButton.setOnMouseClicked(new SendSessionKeyEventHandler());
+        sendSessionKeyButton.setOnMouseClicked(sendSessionKeyEventHandler);
     }
 
     public void addMessage(byte[] messageBytes) {

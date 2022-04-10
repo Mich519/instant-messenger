@@ -7,13 +7,21 @@ import lombok.AllArgsConstructor;
 import mj.project.configurations.AppConfig;
 import mj.project.networking.ServerSocketService;
 
-@AllArgsConstructor
+import javax.inject.Inject;
+
 public class ListenEventHandler implements EventHandler<Event> {
 
     private final Label statusBar;
+    private final ServerSocketService serverSocketService;
+
+    @Inject
+    public ListenEventHandler(Label statusBar, ServerSocketService serverSocketService) {
+        this.statusBar = statusBar;
+        this.serverSocketService = serverSocketService;
+    }
 
     @Override
     public void handle(Event event) {
-        ServerSocketService.getInstance().startListening();
+        serverSocketService.startListening();
     }
 }

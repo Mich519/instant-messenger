@@ -14,8 +14,8 @@ import java.util.List;
 /**
  * This class contains application properties
  */
-@Getter(onMethod_={@Synchronized})
-@Setter(onMethod_={@Synchronized})
+@Getter
+@Setter
 public class AppConfig {
 
     private static AppConfig APP_CONFIG_INSTANCE = new AppConfig();
