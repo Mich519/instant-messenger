@@ -14,9 +14,9 @@ public class ServerSocketService {
         return SERVER_SOCKET_SERVICE;
     }
 
-    public void startListening(int port) {
+    public void startListening() {
         ExecutorService listenTaskExecutor = Executors.newSingleThreadExecutor();
-        serverSocketListenTask = new ServerSocketListenTask(port);
+        serverSocketListenTask = new ServerSocketListenTask();
         listenTaskExecutor.submit(serverSocketListenTask);
     }
 

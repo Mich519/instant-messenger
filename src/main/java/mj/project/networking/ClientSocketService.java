@@ -1,10 +1,10 @@
 package mj.project.networking;
 
-import mj.project.utils.Utils;
+import mj.project.networking.message.Message;
+import mj.project.networking.message.MessageSender;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
 public class ClientSocketService {
     private static final ClientSocketService CLIENT_SOCKET_SERVICE = new ClientSocketService();
@@ -25,13 +25,8 @@ public class ClientSocketService {
     }
 
     public void sendMessage(Message message) {
-        try {
-            outputStream.writeObject(message);
-            outputStream.flush();
-            //String response = inputStream.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MessageSender messageSender = new MessageSender();
+        messageSender.send(message, outputStream);
     }
 
     public void stopConnection() {

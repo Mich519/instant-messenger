@@ -1,28 +1,26 @@
-package mj.project.events;
+package mj.project.gui.events;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import lombok.AllArgsConstructor;
 import mj.project.configurations.AppConfig;
 import mj.project.encryption.encryptors.RSAService;
 import mj.project.exceptions.PortRangeException;
 import mj.project.networking.ClientSocketService;
-import mj.project.networking.Message;
-import mj.project.networking.MessageType;
+import mj.project.networking.message.Message;
+import mj.project.networking.message.MessageType;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 
+@AllArgsConstructor
 public class ConnectEventHandler implements EventHandler<Event> {
 
     private final TextField portTextField;
     private final Label statusLabel;
-
-    public ConnectEventHandler(TextField portTextField, Label statusLabel) {
-        this.portTextField = portTextField;
-        this.statusLabel = statusLabel;
-    }
 
     @Override
     public void handle(Event event) {
@@ -36,7 +34,12 @@ public class ConnectEventHandler implements EventHandler<Event> {
             RSAService rsaService = new RSAService();
             KeyPair keyPair = rsaService.createKeyPair();
             byte[] encodedPublicKey = keyPair.getPublic().getEncoded();
-            Message message = new Message(encodedPublicKey, MessageType.PUBLIC_KEY);
+            Message message = Message.builder()
+                    .senderName(AppConfig.getInstance().getMyNickName().getBytes(StandardCharsets.UTF_8))
+                    .content(encodedPublicKey)
+                    .messageType(MessageType.PUBLIC_KEY)
+                    .build();
+
             ClientSocketService.getInstance().sendMessage(message);
 
         } catch (NumberFormatException e) {

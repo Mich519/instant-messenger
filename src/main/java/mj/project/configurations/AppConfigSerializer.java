@@ -13,39 +13,27 @@ import java.io.IOException;
 public class AppConfigSerializer {
 
     private final ObjectMapper objectMapper;
-    private final AppConfig appConfigInstance;
+    private final AppConfig appConfigInstance = AppConfig.getInstance();
 
     public AppConfigSerializer() {
         this.objectMapper = new ObjectMapper();
-        this.appConfigInstance = AppConfig.getInstance();
     }
 
-    /**
-     * Serialize AppConfig object to JSON format and save it to file
-     */
-    public void serialize() {
-        try {
-            ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
-            String configPath = appConfigInstance.getConfigFilename();
-            writer.writeValue(new File(configPath), appConfigInstance);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void saveSettingsToFile() throws IOException {
+        ObjectWriter writer = objectMapper.writer(new DefaultPrettyPrinter());
+        String configPath = appConfigInstance.getConfigFilePath();
+        File directory = new File(AppConfig.getInstance().getBasePath());
+        if (!directory.exists()) {
+            directory.mkdir();
+
         }
+        writer.writeValue(new File(configPath), appConfigInstance);
     }
 
-    /**
-     * Deserialize JSON file to AppConfig object
-     */
-    public void deserialize() {
-        try {
-            String configPath = appConfigInstance.getConfigFilename();
-            AppConfig loadedAppConfig = objectMapper.readValue(new File(configPath), AppConfig.class);
-            AppConfig.setInstance(loadedAppConfig);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public void loadSettingsFromFile() throws IOException {
+        String configPath = appConfigInstance.getConfigFilePath();
+        AppConfig loadedAppConfig = objectMapper.readValue(new File(configPath), AppConfig.class);
+        AppConfig.setInstance(loadedAppConfig);
     }
 }
 

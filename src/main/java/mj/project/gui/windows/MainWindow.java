@@ -1,4 +1,4 @@
-package mj.project.windows;
+package mj.project.gui.windows;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import mj.project.configurations.AppConfig;
-import mj.project.controllers.MainViewController;
+import mj.project.gui.controllers.MainViewController;
 import mj.project.exceptions.InvalidFxmlPathException;
 
 import java.net.URL;

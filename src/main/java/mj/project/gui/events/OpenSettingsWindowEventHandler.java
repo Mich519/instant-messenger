@@ -1,4 +1,4 @@
-package mj.project.events;
+package mj.project.gui.events;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

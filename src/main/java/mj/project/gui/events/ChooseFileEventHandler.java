@@ -1,21 +1,19 @@
-package mj.project.events;
+package mj.project.gui.events;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import lombok.AllArgsConstructor;
 import mj.project.configurations.AppConfig;
 
+@AllArgsConstructor
 public class ChooseFileEventHandler implements EventHandler<Event> {
 
     /**
      * owner/context of the FileChooser stage
      */
     private final Stage parentStage;
-
-    public ChooseFileEventHandler(Stage parentStage) {
-        this.parentStage = parentStage;
-    }
 
     @Override
     public void handle(Event event) {

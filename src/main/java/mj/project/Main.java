@@ -1,6 +1,6 @@
 package mj.project;
 
-import mj.project.windows.MainWindow;
+import mj.project.gui.windows.MainWindow;
 
 public class Main {
 

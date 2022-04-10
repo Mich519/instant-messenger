@@ -1,4 +1,4 @@
-package mj.project.networking;
+package mj.project.networking.message;
 
 import lombok.Getter;
 
