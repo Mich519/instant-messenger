@@ -1,18 +1,18 @@
 package mj.project.gui.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import mj.project.configurations.AppInitializer;
 import mj.project.gui.events.*;
-import mj.project.networking.ServerSocketService;
 import mj.project.networking.message.Message;
 
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 
-public class MainViewController {
+public class MainViewController  {
 
     private Stage stage;
 
@@ -49,23 +49,22 @@ public class MainViewController {
     @FXML
     Button sendSessionKeyButton;
 
-    @Inject
-    private SendMessageEventHandler sendMessageEventHandler;
+    SendMessageEventHandler sendMessageEventHandler;
+    ConnectEventHandler connectEventHandler;
+    SendSessionKeyEventHandler sendSessionKeyEventHandler;
+    AppInitializer appInitializer;
+    ListenEventHandler listenEventHandler;
+    StopEventHandler stopEventHandler;
 
     @Inject
-    private ConnectEventHandler connectEventHandler;
-
-    @Inject
-    private SendSessionKeyEventHandler sendSessionKeyEventHandler;
-
-    @Inject
-    private AppInitializer appInitializer;
-
-    @Inject
-    private ListenEventHandler listenEventHandler;
-
-    @Inject
-    private StopEventHandler stopEventHandler;
+    public MainViewController(SendMessageEventHandler sendMessageEventHandler, ConnectEventHandler connectEventHandler, SendSessionKeyEventHandler sendSessionKeyEventHandler, AppInitializer appInitializer, ListenEventHandler listenEventHandler, StopEventHandler stopEventHandler) {
+        this.sendMessageEventHandler = sendMessageEventHandler;
+        this.connectEventHandler = connectEventHandler;
+        this.sendSessionKeyEventHandler = sendSessionKeyEventHandler;
+        this.appInitializer = appInitializer;
+        this.listenEventHandler = listenEventHandler;
+        this.stopEventHandler = stopEventHandler;
+    }
 
     @FXML
     public void initialize() {

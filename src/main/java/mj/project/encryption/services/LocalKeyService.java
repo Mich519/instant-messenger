@@ -9,9 +9,10 @@ import javax.inject.Inject;
 
 public class LocalKeyService {
 
-    @Inject private final Hasher passwordHasher;
+    private final Hasher passwordHasher;
     private final Encryptor encryptor;
 
+    @Inject
     public LocalKeyService() {
         this.passwordHasher = new SHA256Hasher();
         this.encryptor = new AESEncryptor();

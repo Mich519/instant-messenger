@@ -4,14 +4,16 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import mj.project.configurations.AppConfigSerializer;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
 public class SaveSettingsEventHandler implements EventHandler<Event> {
 
     private final AppConfigSerializer appConfigSerializer;
 
-    public SaveSettingsEventHandler() {
-        this.appConfigSerializer = new AppConfigSerializer();
+    @Inject
+    public SaveSettingsEventHandler(AppConfigSerializer appConfigSerializer) {
+        this.appConfigSerializer = appConfigSerializer;
     }
 
     @Override

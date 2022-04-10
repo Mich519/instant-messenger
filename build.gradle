@@ -46,12 +46,12 @@ dependencies {
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.2'
 
-    // https://mvnrepository.com/artifact/com.google.dagger/dagger
-    implementation group: 'com.google.dagger', name: 'dagger', version: '2.41'
-
     // https://mvnrepository.com/artifact/com.google.dagger/dagger-compiler
     implementation group: 'com.google.dagger', name: 'dagger-compiler', version: '2.41'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.41'
 
+    // https://mvnrepository.com/artifact/com.google.inject/guice
+    //implementation group: 'com.google.inject', name: 'guice', version: '5.1.0'
 
 
 }
@@ -66,7 +66,5 @@ javafx {
 }
 
 jar {
-    manifest {
-            attributes('Main-Class' : 'mj.project.Main')
-    }
+
 }

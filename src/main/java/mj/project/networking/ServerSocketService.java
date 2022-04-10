@@ -8,7 +8,7 @@ public class ServerSocketService {
     private final ServerSocketListenTask serverSocketListenTask;
 
     @Inject
-    private ServerSocketService(ServerSocketListenTask serverSocketListenTask) {
+    public ServerSocketService(ServerSocketListenTask serverSocketListenTask) {
         this.serverSocketListenTask = serverSocketListenTask;
     }
 

@@ -16,8 +16,9 @@ public class AppConfigSerializer {
     private final ObjectMapper objectMapper;
     private final AppConfig appConfigInstance = AppConfig.getInstance();
 
-    public AppConfigSerializer() {
-        this.objectMapper = new ObjectMapper();
+    @Inject
+    public AppConfigSerializer(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 
     public void saveSettingsToFile() throws IOException {

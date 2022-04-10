@@ -17,13 +17,11 @@ import java.nio.charset.StandardCharsets;
 public class SendMessageEventHandler implements EventHandler<Event> {
 
     private final TextArea textArea;
-    private final Label statusLabel;
     private final SessionKeyService sessionKeyService;
 
     @Inject
-    public SendMessageEventHandler(TextArea textArea, Label statusLabel, SessionKeyService sessionKeyService) {
-        this.textArea = textArea;
-        this.statusLabel = statusLabel;
+    public SendMessageEventHandler(SessionKeyService sessionKeyService) {
+        this.textArea = new TextArea();
         this.sessionKeyService = sessionKeyService;
     }
 

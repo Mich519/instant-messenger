@@ -6,6 +6,7 @@ import mj.project.encryption.services.LocalKeyService;
 import mj.project.utils.io.ByteFileReader;
 import mj.project.utils.io.ByteFileWriter;
 
+import javax.inject.Inject;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -18,12 +19,13 @@ public class RSAFileStreamHandler {
     private final RSAPrivateKeyFactory rsaPrivateKeyFactory;
     private final RSAPublicKeyFactory rsaPublicKeyFactory;
 
-    public RSAFileStreamHandler() {
-        this.byteFileReader = new ByteFileReader();
-        this.byteFileWriter = new ByteFileWriter();
-        this.localKeyService = new LocalKeyService();
-        this.rsaPrivateKeyFactory = new RSAPrivateKeyFactory();
-        this.rsaPublicKeyFactory = new RSAPublicKeyFactory();
+    @Inject
+    public RSAFileStreamHandler(ByteFileReader byteFileReader, ByteFileWriter byteFileWriter, LocalKeyService localKeyService, RSAPrivateKeyFactory rsaPrivateKeyFactory, RSAPublicKeyFactory rsaPublicKeyFactory) {
+        this.byteFileReader = byteFileReader;
+        this.byteFileWriter = byteFileWriter;
+        this.localKeyService = localKeyService;
+        this.rsaPrivateKeyFactory = rsaPrivateKeyFactory;
+        this.rsaPublicKeyFactory = rsaPublicKeyFactory;
     }
 
     private void writeKey(byte[] keyBytes, String path, byte[] password) {

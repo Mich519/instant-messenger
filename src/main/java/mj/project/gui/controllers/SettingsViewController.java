@@ -22,7 +22,7 @@ public class SettingsViewController {
     @FXML
     public void initialize() {
         Controllers.setSettingsViewController(this);
-        saveSettingsButton.setOnMouseClicked(new SaveSettingsEventHandler());
+        //saveSettingsButton.setOnMouseClicked(new SaveSettingsEventHandler());
 
         ToggleGroup blockCypherGroup = new ToggleGroup();
         ecbRadioButton.setToggleGroup(blockCypherGroup);
