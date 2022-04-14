@@ -7,6 +7,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import mj.project.configurations.AppConfig;
 import mj.project.encryption.data.KeyStorage;
+import mj.project.encryption.services.RSAService;
 import mj.project.encryption.services.SessionKeyService;
 import mj.project.exceptions.PortRangeException;
 import mj.project.exceptions.KeyPairNotFound;
@@ -22,6 +23,7 @@ import mj.project.networking.services.ServerSocketService;
 import javax.crypto.SecretKey;
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyPair;
 import java.security.PublicKey;
 
 public class MainViewController  {
@@ -69,6 +71,7 @@ public class MainViewController  {
     private final MessageService messageService;
     private final ClientSocketService clientSocketService;
     private final ServerSocketService serverSocketService;
+    private final RSAService rsaService;
 
 
     @Inject
@@ -77,13 +80,14 @@ public class MainViewController  {
                               SessionKeyService sessionKeyService,
                               MessageService messageService,
                               ClientSocketService clientSocketService,
-                              ServerSocketService serverSocketService) {
+                              ServerSocketService serverSocketService, RSAService rsaService) {
         this.keyStorage = keyStorage;
         this.networkPropertiesStorage = networkPropertiesStorage;
         this.sessionKeyService = sessionKeyService;
         this.messageService = messageService;
         this.clientSocketService = clientSocketService;
         this.serverSocketService = serverSocketService;
+        this.rsaService = rsaService;
     }
 
     @FXML
@@ -111,9 +115,13 @@ public class MainViewController  {
                 if (recipientPort < 0 || recipientPort > 65535) {
                     throw new PortRangeException();
                 }
-                if (keyStorage.getThisKeyPair() == null)
-                    log("Key Pair not found");
-                    throw new KeyPairNotFound();
+                if (keyStorage.getThisKeyPair() == null) {
+                    log("Your key pair not found. Generating new key pair ...");
+                    KeyPair newKeyPair = rsaService.createKeyPair();
+                    keyStorage.setThisKeyPair(newKeyPair);
+                }
+                log("Connecting with a host ...");
+
                 // connect with a server
             /*clientSocketService.startConnection(networkPropertiesStorage.getTargetIp(), targetPort);
             KeyPair keyPair = rsaService.createKeyPair();
@@ -129,9 +137,9 @@ public class MainViewController  {
             ClientSocketService.getInstance().sendMessage(message);*/
 
             } catch (NumberFormatException e) {
-                log("Error: Port number contains invalid characters");
+                log("Port number contains invalid characters");
             } catch (PortRangeException e) {
-                log("Error: Port number is out of range");
+                log("Port number is out of range");
             }
         });
         listenButton.setOnMouseClicked(event -> serverSocketService.startListening());

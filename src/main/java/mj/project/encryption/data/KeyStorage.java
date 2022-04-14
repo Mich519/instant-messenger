@@ -7,17 +7,18 @@ import mj.project.encryption.block_ciphers.BlockCipher;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.Serializable;
 import java.security.KeyPair;
 import java.security.PublicKey;
 
 @Getter
 @Setter
+@Singleton
 public class KeyStorage implements Serializable {
 
     @Inject
-    public KeyStorage() {
-    }
+    public KeyStorage() {}
 
     @JsonIgnore private PublicKey recipientPublicKey = null;
     @JsonIgnore private SecretKeySpec sessionKey = null;

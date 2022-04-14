@@ -12,8 +12,8 @@ public class AppConfig {
     public AppConfig() {}
 
     // gui properties
-    public static final int SCREEN_WIDTH = 1920;
-    public static final int SCREEN_HEIGHT = 1080;
+    public static final int SCREEN_WIDTH = 800;
+    public static final int SCREEN_HEIGHT = 700;
     public static final String WINDOW_TITLE = "BSK Project";
     public static final boolean WINDOW_RESIZABLE = false;
 

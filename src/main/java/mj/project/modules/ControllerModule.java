@@ -5,15 +5,10 @@ import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.ClassKey;
 import dagger.multibindings.IntoMap;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import mj.project.configurations.AppInitializer;
 import mj.project.encryption.data.KeyStorage;
+import mj.project.encryption.services.RSAService;
 import mj.project.encryption.services.SessionKeyService;
 import mj.project.gui.controllers.MainViewController;
-import mj.project.gui.controllers.SettingsViewController;
-import mj.project.gui.events.*;
 import mj.project.networking.data.NetworkPropertiesStorage;
 import mj.project.networking.services.ClientSocketService;
 import mj.project.networking.services.MessageService;
@@ -33,13 +28,14 @@ public class ControllerModule {
                                             SessionKeyService sessionKeyService,
                                             MessageService messageService,
                                             ClientSocketService clientSocketService,
-                                            ServerSocketService serverSocketService) {
+                                            ServerSocketService serverSocketService,
+                                            RSAService rsaService) {
         return new MainViewController(keyStorage,
                 networkPropertiesStorage,
                  sessionKeyService,
                  messageService,
                  clientSocketService,
-                 serverSocketService);
+                 serverSocketService, rsaService);
     }
 
     /*@Provides
