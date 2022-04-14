@@ -3,9 +3,10 @@ package mj.project.gui.events;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import mj.project.configurations.AppConfig;
+import mj.project.encryption.data.KeyStorage;
 import mj.project.encryption.services.SessionKeyService;
 import mj.project.gui.controllers.Controllers;
-import mj.project.networking.ClientSocketService;
+import mj.project.networking.services.ClientSocketService;
 import mj.project.networking.message.Message;
 import mj.project.networking.message.MessageType;
 
@@ -17,15 +18,20 @@ import java.security.PublicKey;
 public class SendSessionKeyEventHandler implements EventHandler<Event> {
 
     private final SessionKeyService sessionKeyService;
+    private final AppConfig appConfig;
+    private final KeyStorage keyStorage;
+    private final ClientSocketService clientSocketService;
 
-    @Inject
-    public SendSessionKeyEventHandler(SessionKeyService sessionKeyService) {
+    public SendSessionKeyEventHandler(SessionKeyService sessionKeyService, AppConfig appConfig, KeyStorage keyStorage, ClientSocketService clientSocketService) {
         this.sessionKeyService = sessionKeyService;
+        this.appConfig = appConfig;
+        this.keyStorage = keyStorage;
+        this.clientSocketService = clientSocketService;
     }
 
     @Override
     public void handle(Event event) {
-        PublicKey recipientPublicKey = AppConfig.getInstance().getRecipientPublicKey();
+        PublicKey recipientPublicKey = keyStorage.getRecipientPublicKey();
         if(recipientPublicKey == null) {
             throw new RuntimeException("Recipient's key not exists");
         }
@@ -35,12 +41,12 @@ public class SendSessionKeyEventHandler implements EventHandler<Event> {
 
         Message sessionKeyMessage = Message
                 .builder()
-                .senderName(AppConfig.getInstance().getMyNickName().getBytes(StandardCharsets.US_ASCII))
+                .senderName("hello".getBytes(StandardCharsets.US_ASCII))
                 .content(encryptedSessionKey)
                 .messageType(MessageType.SESSION_KEY)
                 .build();
 
-        Controllers.getMainViewController().addMessage(elo);
-        ClientSocketService.getInstance().sendMessage(sessionKeyMessage);
+        //Controllers.getMainViewController().addMessage(elo);
+        clientSocketService.sendMessage(sessionKeyMessage);
     }
 }

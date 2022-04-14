@@ -1,22 +1,22 @@
-package mj.project.networking;
+package mj.project.networking.services;
 
 import mj.project.networking.message.Message;
 import mj.project.networking.message.MessageSender;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.*;
 import java.net.Socket;
 
+@Singleton
 public class ClientSocketService {
-    private static final ClientSocketService CLIENT_SOCKET_SERVICE = new ClientSocketService();
+
     private Socket clientSocket;
     private ObjectOutputStream outputStream;
     private BufferedReader inputStream;
 
-    private ClientSocketService() {}
-
-    public static ClientSocketService getInstance() {
-        return CLIENT_SOCKET_SERVICE;
-    }
+    @Inject
+    public ClientSocketService() {}
 
     public void startConnection(String ip, int port) throws IOException {
         clientSocket = new Socket(ip, port);

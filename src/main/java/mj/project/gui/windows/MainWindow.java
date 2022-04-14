@@ -8,14 +8,20 @@ import javafx.stage.Stage;
 import mj.project.configurations.AppConfig;
 import mj.project.exceptions.InvalidFxmlPathException;
 import mj.project.gui.controllers.MainViewController;
-import mj.project.gui.windows.ed.DaggerMyDiContainer;
-import mj.project.gui.windows.ed.MyDiContainer;
+import mj.project.modules.DaggerDiContainer;
+import mj.project.modules.DiContainer;
 
+import javax.inject.Inject;
 import javax.inject.Provider;
 import java.net.URL;
 import java.util.Map;
 
 public class MainWindow extends Application {
+
+    @Inject
+    public MainWindow() {
+
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -25,25 +31,22 @@ public class MainWindow extends Application {
             throw new InvalidFxmlPathException(mainViewFxmlPath);
         }
 
-        MyDiContainer myDiContainer = DaggerMyDiContainer.create();
-        Map<Class<?>, Provider<Object>> controllers = myDiContainer.getControllers();
+        DiContainer diContainer = DaggerDiContainer.create();
+        Map<Class<?>, Provider<Object>> controllers = diContainer.getControllers();
         FXMLLoader fxmlLoader = new FXMLLoader(mainViewFxmlResource);
         fxmlLoader.setControllerFactory(type -> controllers.get(type).get());
         Parent root = fxmlLoader.load();
-
-
-
 
         ((MainViewController)fxmlLoader.getController()).setStage(stage);
 
         Scene scene = new Scene(
                 root,
-                AppConfig.getInstance().getScreenWidth(),
-                AppConfig.getInstance().getScreenHeight()
+                AppConfig.SCREEN_WIDTH,
+                AppConfig.SCREEN_HEIGHT
         );
 
-        stage.setTitle(AppConfig.getInstance().getWindowTitle());
-        stage.setResizable(AppConfig.getInstance().isWindowResizable());
+        stage.setTitle(AppConfig.WINDOW_TITLE);
+        stage.setResizable(AppConfig.WINDOW_RESIZABLE);
         stage.setScene(scene);
         stage.show();
     }

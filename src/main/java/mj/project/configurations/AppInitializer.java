@@ -1,23 +1,26 @@
 package mj.project.configurations;
 
-import mj.project.networking.ServerSocketService;
+import mj.project.encryption.encryptors.RSAFileIO;
+import mj.project.networking.services.ServerSocketService;
 
 import javax.inject.Inject;
-import java.io.IOException;
 
 public class AppInitializer {
-    private final AppConfigSerializer appConfigSerializer;
+
     private final ServerSocketService serverSocketService;
+    private final RSAFileIO rsaFileIO;
 
     @Inject
-    public AppInitializer(AppConfigSerializer appConfigSerializer, ServerSocketService serverSocketService) {
-        this.appConfigSerializer = appConfigSerializer;
+    public AppInitializer(ServerSocketService serverSocketService, RSAFileIO rsaFileIO) {
         this.serverSocketService = serverSocketService;
+        this.rsaFileIO = rsaFileIO;
     }
 
-    public void init() {
+    public void initialize() {
 
-        try {
+        serverSocketService.startListening();
+
+        /*try {
             appConfigSerializer.loadSettingsFromFile();
             serverSocketService.startListening();
         } catch (IOException e) {
@@ -26,6 +29,8 @@ public class AppInitializer {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        }
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }*/
     }
 }

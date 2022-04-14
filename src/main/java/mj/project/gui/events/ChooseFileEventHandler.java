@@ -7,20 +7,19 @@ import javafx.stage.Stage;
 import lombok.AllArgsConstructor;
 import mj.project.configurations.AppConfig;
 
-@AllArgsConstructor
+import javax.inject.Inject;
+
 public class ChooseFileEventHandler implements EventHandler<Event> {
 
-    /**
-     * owner/context of the FileChooser stage
-     */
-    private final Stage parentStage;
+    public ChooseFileEventHandler() {
+    }
 
     @Override
     public void handle(Event event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Specific files", AppConfig.getInstance().getAllowedFileExtensions());
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Specific files", AppConfig.ALLOWED_FILE_EXTENSIONS);
         fileChooser.getExtensionFilters().add(extensionFilter);
-        fileChooser.showOpenDialog(parentStage);
+        //fileChooser.showOpenDialog(parentStage);
     }
 }

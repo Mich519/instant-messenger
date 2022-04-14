@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import mj.project.configurations.AppConfig;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 
@@ -16,6 +17,9 @@ import java.net.URL;
 // TODO: make main window inaccessible when settings window is opened
 
 public class OpenSettingsWindowEventHandler implements EventHandler<ActionEvent> {
+
+    public OpenSettingsWindowEventHandler() {
+    }
 
     @Override
     public void handle(ActionEvent event) {
@@ -35,14 +39,14 @@ public class OpenSettingsWindowEventHandler implements EventHandler<ActionEvent>
         if(root != null) {
             scene = new Scene(
                     root,
-                    AppConfig.getInstance().getScreenWidth(),
-                    AppConfig.getInstance().getScreenHeight()
+                    AppConfig.SCREEN_WIDTH,
+                    AppConfig.SCREEN_HEIGHT
             );
         }
 
         Stage stage = new Stage();
-        stage.setTitle(AppConfig.getInstance().getWindowTitle());
-        stage.setResizable(AppConfig.getInstance().isWindowResizable());
+        stage.setTitle(AppConfig.WINDOW_TITLE);
+        stage.setResizable(AppConfig.WINDOW_RESIZABLE);
         stage.setScene(scene);
         stage.show();
 

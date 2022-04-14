@@ -2,14 +2,17 @@ package mj.project.gui.events;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import mj.project.configurations.AppConfigSerializer;
 
 import javax.inject.Inject;
 import java.io.IOException;
 
 public class SaveSettingsEventHandler implements EventHandler<Event> {
+    @Override
+    public void handle(Event event) {
 
-    private final AppConfigSerializer appConfigSerializer;
+    }
+
+    /*private final AppConfigSerializer appConfigSerializer;
 
     @Inject
     public SaveSettingsEventHandler(AppConfigSerializer appConfigSerializer) {
@@ -23,6 +26,6 @@ public class SaveSettingsEventHandler implements EventHandler<Event> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }
 

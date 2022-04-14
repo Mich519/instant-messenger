@@ -6,6 +6,7 @@ import mj.project.encryption.encryptors.Encryptor;
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.inject.Inject;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -13,8 +14,12 @@ import java.security.NoSuchAlgorithmException;
 public class AESEncryptor implements Encryptor {
 
     //todo: allow changing block cipher (CBC/ECB)
-    private static final String CIPHER_TYPE = "AES/"+ AppConfig.getInstance().getBlockCipher() +"/PKCS5Padding";
-    private static final String ALGORITHM = "AES";
+    private final String CIPHER_TYPE = "AES/CBC/PKCS5Padding";
+    private final String ALGORITHM = "AES";
+
+    @Inject
+    public AESEncryptor() {
+    }
 
     private byte[] doOperation(byte[] input, byte[] keyBytes, int operationMode) {
         try {

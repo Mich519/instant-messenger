@@ -1,57 +1,27 @@
 package mj.project.configurations;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Synchronized;
-
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.file.Path;
-import java.security.KeyPair;
-import java.security.PublicKey;
+import javax.inject.Inject;
 import java.util.List;
 
 /**
  * This class contains application properties
  */
-@Getter
-@Setter
 public class AppConfig {
 
-    private static AppConfig APP_CONFIG_INSTANCE = new AppConfig();
+    @Inject
+    public AppConfig() {}
 
     // gui properties
-    private int screenWidth = 640;
-    private int screenHeight = 480;
-    private String windowTitle = "BSK Project";
-    private boolean windowResizable = false;
+    public static final int SCREEN_WIDTH = 1920;
+    public static final int SCREEN_HEIGHT = 1080;
+    public static final String WINDOW_TITLE = "BSK Project";
+    public static final boolean WINDOW_RESIZABLE = false;
 
     // paths
-    private String basePath = System.getProperty("user.home") + "\\.bsk-project";
-    private String configFilePath = basePath + "\\config.json";
-    private String privateKeyPath = basePath + "\\private\\private_key";
-    private String publicKeyPath = basePath + "\\public\\public_key";
+    public static final String BASE_PATH = System.getProperty("user.home") + "\\.bsk-project";
+    public static final String CONFIG_FILE_PATH = BASE_PATH + "\\config.json";
+    public static final String PRIVATE_KEY_PATH = BASE_PATH + "\\private\\private_key";
+    public static final String PUBLIC_KEY_PATH = BASE_PATH + "\\public\\public_key";
 
-    private String myNickName = "John";
-    private int myPort = 8080;
-    private String targetIp = "127.0.0.1";
-    private int targetPort = 8080;
-    private List<String> allowedFileExtensions = List.of("*.txt", "*.png", "*.pdf", "*.avi");
-    volatile private PublicKey recipientPublicKey = null;
-
-    @JsonIgnore
-    volatile private SecretKeySpec sessionKey = null;
-
-    private KeyPair thisKeyPair = null;
-    private String blockCipher = "CBC";
-
-    private AppConfig() {}
-
-    public static AppConfig getInstance(){
-        return APP_CONFIG_INSTANCE;
-    }
-
-    public static void setInstance(AppConfig appConfig){
-        APP_CONFIG_INSTANCE = appConfig;
-    }
+    public static final List<String> ALLOWED_FILE_EXTENSIONS = List.of("*.txt", "*.png", "*.pdf", "*.avi");
 }

@@ -4,30 +4,27 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import lombok.AllArgsConstructor;
-import mj.project.configurations.AppConfig;
 import mj.project.encryption.services.RSAService;
 import mj.project.exceptions.PortRangeException;
-import mj.project.networking.ClientSocketService;
-import mj.project.networking.message.Message;
-import mj.project.networking.message.MessageType;
+import mj.project.networking.data.NetworkPropertiesStorage;
+import mj.project.networking.services.ClientSocketService;
 
 import javax.inject.Inject;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyPair;
 
 public class ConnectEventHandler implements EventHandler<Event> {
 
     private final TextField portTextField;
     private final Label statusLabel;
     private final RSAService rsaService;
+    private final NetworkPropertiesStorage networkPropertiesStorage;
+    private final ClientSocketService clientSocketService;
 
-    @Inject
-    public ConnectEventHandler(TextField portTextField, Label statusLabel, RSAService rsaService) {
+    public ConnectEventHandler(TextField portTextField, Label statusLabel, RSAService rsaService, NetworkPropertiesStorage networkPropertiesStorage, ClientSocketService clientSocketService) {
         this.portTextField = portTextField;
         this.statusLabel = statusLabel;
         this.rsaService = rsaService;
+        this.networkPropertiesStorage = networkPropertiesStorage;
+        this.clientSocketService = clientSocketService;
     }
 
     @Override
@@ -38,25 +35,23 @@ public class ConnectEventHandler implements EventHandler<Event> {
                 throw new PortRangeException();
             }
             // connect with a server
-            ClientSocketService.getInstance().startConnection(AppConfig.getInstance().getTargetIp(), targetPort);
+            /*clientSocketService.startConnection(networkPropertiesStorage.getTargetIp(), targetPort);
             KeyPair keyPair = rsaService.createKeyPair();
             byte[] encodedPublicKey = keyPair.getPublic().getEncoded();
-            AppConfig.getInstance().setThisKeyPair(keyPair);
+            appConfig.setThisKeyPair(keyPair);
 
             Message message = Message.builder()
-                    .senderName(AppConfig.getInstance().getMyNickName().getBytes(StandardCharsets.UTF_8))
+                    .senderName(appConfig.getMyNickName().getBytes(StandardCharsets.UTF_8))
                     .content(encodedPublicKey)
                     .messageType(MessageType.PUBLIC_KEY)
                     .build();
 
-            ClientSocketService.getInstance().sendMessage(message);
+            ClientSocketService.getInstance().sendMessage(message);*/
 
         } catch (NumberFormatException e) {
             statusLabel.setText("Error: Port number contains invalid characters");
         } catch (PortRangeException e) {
             statusLabel.setText("Error: Port number is out of range");
-        } catch (IOException e) {
-            statusLabel.setText("Error: Unable to connect with a host");
         }
     }
 }

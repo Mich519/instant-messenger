@@ -2,7 +2,7 @@ package mj.project.encryption.services;
 
 import mj.project.encryption.encryptors.Encryptor;
 import mj.project.encryption.encryptors.RSAEncryptor;
-import mj.project.encryption.encryptors.RSAFileStreamHandler;
+import mj.project.encryption.encryptors.RSAFileIO;
 import mj.project.encryption.factories.RSAKeyPairFactory;
 
 import javax.inject.Inject;
@@ -14,22 +14,16 @@ public class RSAService {
 
     private final Encryptor rsaEncryptor;
     private final RSAKeyPairFactory rsaKeyPairFactory;
-    private final RSAFileStreamHandler rsaFileStreamHandler;
+    private final RSAFileIO rsaFileIO;
 
     @Inject
-    public RSAService(Encryptor rsaEncryptor,
+    public RSAService(RSAEncryptor rsaEncryptor,
                       RSAKeyPairFactory rsaKeyPairFactory,
-                      RSAFileStreamHandler rsaFileStreamHandler) {
+                      RSAFileIO rsaFileIO) {
         this.rsaEncryptor = rsaEncryptor;
         this.rsaKeyPairFactory = rsaKeyPairFactory;
-        this.rsaFileStreamHandler = rsaFileStreamHandler;
+        this.rsaFileIO = rsaFileIO;
     }
-
-    /*public RSAService() {
-        this.rsaEncryptor = new RSAEncryptor();
-        this.rsaKeyPairFactory = new RSAKeyPairFactory();
-        this.rsaFileStreamHandler = new RSAFileStreamHandler();
-    }*/
 
     public byte[] encrypt(byte[] input, PublicKey publicKey) {
         return rsaEncryptor.encrypt(input, publicKey.getEncoded());
@@ -44,10 +38,10 @@ public class RSAService {
     }
 
     public KeyPair loadKeyPairFromFile(String privateKeyPath, String publicKeyPath, byte[] password) {
-        return rsaFileStreamHandler.readKeyPairFromFile(privateKeyPath, publicKeyPath, password);
+        return rsaFileIO.readKeyPairFromFile(privateKeyPath, publicKeyPath, password);
     }
 
     public void saveKeyPairToFile(KeyPair keyPair, String privateKeyPath, String publicKeyPath, byte[] password) {
-        rsaFileStreamHandler.writeKeyPairToFile(keyPair, privateKeyPath, publicKeyPath, password);
+        rsaFileIO.writeKeyPairToFile(keyPair, privateKeyPath, publicKeyPath, password);
     }
 }

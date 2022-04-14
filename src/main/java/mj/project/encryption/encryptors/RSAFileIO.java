@@ -3,26 +3,23 @@ package mj.project.encryption.encryptors;
 import mj.project.encryption.factories.RSAPrivateKeyFactory;
 import mj.project.encryption.factories.RSAPublicKeyFactory;
 import mj.project.encryption.services.LocalKeyService;
-import mj.project.utils.io.ByteFileReader;
-import mj.project.utils.io.ByteFileWriter;
+import mj.project.utils.io.ObjectFileIO;
 
 import javax.inject.Inject;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-public class RSAFileStreamHandler {
+public class RSAFileIO {
 
-    private final ByteFileReader byteFileReader;
-    private final ByteFileWriter byteFileWriter;
+    private final ObjectFileIO objectFileIO;
     private final LocalKeyService localKeyService;
     private final RSAPrivateKeyFactory rsaPrivateKeyFactory;
     private final RSAPublicKeyFactory rsaPublicKeyFactory;
 
     @Inject
-    public RSAFileStreamHandler(ByteFileReader byteFileReader, ByteFileWriter byteFileWriter, LocalKeyService localKeyService, RSAPrivateKeyFactory rsaPrivateKeyFactory, RSAPublicKeyFactory rsaPublicKeyFactory) {
-        this.byteFileReader = byteFileReader;
-        this.byteFileWriter = byteFileWriter;
+    public RSAFileIO(ObjectFileIO objectFileIO, LocalKeyService localKeyService, RSAPrivateKeyFactory rsaPrivateKeyFactory, RSAPublicKeyFactory rsaPublicKeyFactory) {
+        this.objectFileIO = objectFileIO;
         this.localKeyService = localKeyService;
         this.rsaPrivateKeyFactory = rsaPrivateKeyFactory;
         this.rsaPublicKeyFactory = rsaPublicKeyFactory;
@@ -30,11 +27,11 @@ public class RSAFileStreamHandler {
 
     private void writeKey(byte[] keyBytes, String path, byte[] password) {
         byte[] keyBytesEncrypted = localKeyService.encrypt(keyBytes, password);
-        byteFileWriter.write(keyBytesEncrypted, path);
+        objectFileIO.writeObject(keyBytesEncrypted, path);
     }
 
     private byte[] readKey(String path, byte[] password) {
-        byte[] keyBytesEncrypted = byteFileReader.read(path);
+        byte[] keyBytesEncrypted = objectFileIO.readObject(byte[].class, path);
         return localKeyService.decrypt(keyBytesEncrypted, password);
     }
 

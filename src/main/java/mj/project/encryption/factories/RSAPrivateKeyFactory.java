@@ -2,6 +2,7 @@ package mj.project.encryption.factories;
 
 import mj.project.exceptions.PublicKeyCreateException;
 
+import javax.inject.Inject;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.EncodedKeySpec;
@@ -11,6 +12,10 @@ import java.security.spec.PKCS8EncodedKeySpec;
 public class RSAPrivateKeyFactory implements KeyFactory<PrivateKey> {
 
     private static final String ALGORITHM = "RSA";
+
+    @Inject
+    public RSAPrivateKeyFactory() {
+    }
 
     @Override
     public PrivateKey create(byte[] input) {

@@ -1,10 +1,13 @@
-package mj.project.networking;
+package mj.project.networking.services;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@Singleton
 public class ServerSocketService {
+
     private final ServerSocketListenTask serverSocketListenTask;
 
     @Inject

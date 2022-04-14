@@ -1,7 +1,5 @@
 package mj.project.networking.message;
 
-import mj.project.configurations.AppConfig;
-
 import java.io.IOException;
 import java.io.ObjectOutput;
 

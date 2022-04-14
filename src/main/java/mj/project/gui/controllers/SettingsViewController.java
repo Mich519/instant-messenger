@@ -4,10 +4,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
-import mj.project.encryption.block_ciphers.BlockCiphers;
-import mj.project.gui.events.SaveSettingsEventHandler;
+import lombok.NoArgsConstructor;
+import mj.project.configurations.AppConfig;
+import mj.project.encryption.block_ciphers.BlockCipher;
+import mj.project.gui.events.GenerateKeyPairEventHandler;
 import mj.project.gui.events.SelectBlockCypherEventHandler;
 
+import javax.inject.Inject;
+
+@NoArgsConstructor
 public class SettingsViewController {
 
     @FXML
@@ -20,17 +25,30 @@ public class SettingsViewController {
     RadioButton ecbRadioButton;
 
     @FXML
+    Button generateKeyPair;
+
+    GenerateKeyPairEventHandler generateKeyPairEventHandler;
+
+    @Inject
+    public SettingsViewController(GenerateKeyPairEventHandler generateKeyPairEventHandler) {
+        this.generateKeyPairEventHandler = generateKeyPairEventHandler;
+    }
+
+    @FXML
     public void initialize() {
         Controllers.setSettingsViewController(this);
         //saveSettingsButton.setOnMouseClicked(new SaveSettingsEventHandler());
 
         ToggleGroup blockCypherGroup = new ToggleGroup();
         ecbRadioButton.setToggleGroup(blockCypherGroup);
-        ecbRadioButton.setUserData(BlockCiphers.newECBBlockCipher());
+        ecbRadioButton.setUserData(BlockCipher.ECB);
         cbcRadioButton.setToggleGroup(blockCypherGroup);
-        cbcRadioButton.setUserData(BlockCiphers.newCBCBlockCipher());
+        cbcRadioButton.setUserData(BlockCipher.CBC);
         cbcRadioButton.setSelected(true);
 
-        blockCypherGroup.selectedToggleProperty().addListener(new SelectBlockCypherEventHandler(blockCypherGroup));
+        generateKeyPair.setOnMouseClicked(generateKeyPairEventHandler);
+
+        //SelectBlockCypherEventHandler selectBlockCypherEventHandler = new SelectBlockCypherEventHandler(blockCypherGroup, appConfig);
+        //blockCypherGroup.selectedToggleProperty().addListener(selectBlockCypherEventHandler);
     }
 }

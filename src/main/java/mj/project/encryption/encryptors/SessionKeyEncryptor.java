@@ -1,11 +1,14 @@
 package mj.project.encryption.encryptors;
 
+import javax.inject.Inject;
+
 public class SessionKeyEncryptor implements Encryptor {
 
-    private final AESEncryptor aesEncryptor;
+    private final Encryptor aesEncryptor;
 
-    public SessionKeyEncryptor() {
-        this.aesEncryptor = new AESEncryptor();
+    @Inject
+    public SessionKeyEncryptor(AESEncryptor aesEncryptor) {
+        this.aesEncryptor = aesEncryptor;
     }
 
     @Override
