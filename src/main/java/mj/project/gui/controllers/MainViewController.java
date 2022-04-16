@@ -1,5 +1,6 @@
 package mj.project.gui.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -10,9 +11,9 @@ import mj.project.encryption.data.KeyStorage;
 import mj.project.encryption.services.RSAService;
 import mj.project.encryption.services.SessionKeyService;
 import mj.project.exceptions.PortRangeException;
-import mj.project.exceptions.KeyPairNotFound;
 import mj.project.exceptions.RecipientKeyNotFound;
 import mj.project.exceptions.SessionKeyNotExchangedException;
+import mj.project.gui.events.OpenSettingsWindowEventHandler;
 import mj.project.networking.data.NetworkPropertiesStorage;
 import mj.project.networking.message.Message;
 import mj.project.networking.message.MessageType;
@@ -22,11 +23,12 @@ import mj.project.networking.services.ServerSocketService;
 
 import javax.crypto.SecretKey;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.PublicKey;
 
-public class MainViewController  {
+public class MainViewController {
 
     @FXML
     TextArea textArea;
@@ -95,13 +97,22 @@ public class MainViewController  {
         Controllers.setMainViewController(this);
 
         // initial stuff
-        // todo:
-        //appInitializer.initialize();
 
         // send event
         sendButton.setOnMouseClicked(event -> {
-            if(keyStorage.getSessionKey() == null)
-                throw new SessionKeyNotExchangedException();
+            if (keyStorage.getSessionKey() == null) {
+                PublicKey recipientPublicKey = keyStorage.getRecipientPublicKey();
+                if (recipientPublicKey == null) {
+                    log("Recipient key not found");
+                    throw new RecipientKeyNotFound();
+                }
+                SecretKey sessionKey = sessionKeyService.createSessionKey();
+                byte[] encryptedSessionKey = sessionKeyService.encryptSessionKey(sessionKey, recipientPublicKey);
+                Message sessionKeyMessage = messageService.createMessage(encryptedSessionKey, MessageType.SESSION_KEY);
+                keyStorage.setSessionKey(sessionKey);
+                clientSocketService.sendMessage(sessionKeyMessage);
+                log("Session key has been sent to the user");
+            }
             String messageContent = textArea.getText();
             byte[] messageContentEncoded = sessionKeyService.encrypt(messageContent.getBytes(StandardCharsets.UTF_8), keyStorage.getSessionKey());
             Message message = messageService.createMessage(messageContentEncoded, MessageType.TEXT);
@@ -123,23 +134,17 @@ public class MainViewController  {
                 log("Connecting with a host ...");
 
                 // connect with a server
-            /*clientSocketService.startConnection(networkPropertiesStorage.getTargetIp(), targetPort);
-            KeyPair keyPair = rsaService.createKeyPair();
-            byte[] encodedPublicKey = keyPair.getPublic().getEncoded();
-            appConfig.setThisKeyPair(keyPair);
-
-            Message message = Message.builder()
-                    .senderName(appConfig.getMyNickName().getBytes(StandardCharsets.UTF_8))
-                    .content(encodedPublicKey)
-                    .messageType(MessageType.PUBLIC_KEY)
-                    .build();
-
-            ClientSocketService.getInstance().sendMessage(message);*/
-
+                clientSocketService.startConnection(networkPropertiesStorage.getTargetIp(), Integer.parseInt(recipientPortTextField.getText()));
+                byte[] encodedPublicKey = keyStorage.getThisKeyPair().getPublic().getEncoded();
+                Message publicKeyMessage = messageService.createMessage(encodedPublicKey, MessageType.PUBLIC_KEY);
+                clientSocketService.sendMessage(publicKeyMessage);
             } catch (NumberFormatException e) {
-                log("Port number contains invalid characters");
+                log("Error: Port number contains invalid characters");
             } catch (PortRangeException e) {
-                log("Port number is out of range");
+                log("Error: Port number is out of range");
+            } catch (IOException e) {
+                log("Error: Connection failed");
+                e.printStackTrace();
             }
         });
         listenButton.setOnMouseClicked(event -> serverSocketService.startListening());
@@ -152,19 +157,9 @@ public class MainViewController  {
         });
 
         //todo
-        optionsMenuItem.setOnAction(event -> {});
+        optionsMenuItem.setOnAction(new OpenSettingsWindowEventHandler());
 
         sendSessionKeyButton.setOnMouseClicked(event -> {
-            PublicKey recipientPublicKey = keyStorage.getRecipientPublicKey();
-            if(recipientPublicKey == null) {
-                log("Recipient key not found");
-                throw new RecipientKeyNotFound();
-            }
-            SecretKey sessionKey = sessionKeyService.createSessionKey();
-            byte[] encryptedSessionKey = sessionKeyService.encryptSessionKey(sessionKey, recipientPublicKey);
-            Message sessionKeyMessage = messageService.createMessage(encryptedSessionKey, MessageType.SESSION_KEY);
-            clientSocketService.sendMessage(sessionKeyMessage);
-            log("Session key has been sent to the user");
         });
     }
 
@@ -172,8 +167,8 @@ public class MainViewController  {
         logsContainer.getChildren().add(new Label(text));
     }
 
-    public void updateStatus(String text) {
-        log(text);
+    public static void addLog(String text) {
+        Platform.runLater(() -> Controllers.getMainViewController().log(text));
     }
 
     public void setStage(Stage stage) {

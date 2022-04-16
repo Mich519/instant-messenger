@@ -6,9 +6,11 @@ import dagger.Provides;
 import dagger.multibindings.ClassKey;
 import dagger.multibindings.IntoMap;
 import mj.project.encryption.data.KeyStorage;
+import mj.project.encryption.services.LocalKeyService;
 import mj.project.encryption.services.RSAService;
 import mj.project.encryption.services.SessionKeyService;
 import mj.project.gui.controllers.MainViewController;
+import mj.project.gui.controllers.SettingsViewController;
 import mj.project.networking.data.NetworkPropertiesStorage;
 import mj.project.networking.services.ClientSocketService;
 import mj.project.networking.services.MessageService;
@@ -30,21 +32,29 @@ public class ControllerModule {
                                             ClientSocketService clientSocketService,
                                             ServerSocketService serverSocketService,
                                             RSAService rsaService) {
-        return new MainViewController(keyStorage,
+        return new MainViewController(
+                keyStorage,
                 networkPropertiesStorage,
-                 sessionKeyService,
-                 messageService,
-                 clientSocketService,
-                 serverSocketService, rsaService);
+                sessionKeyService,
+                messageService,
+                clientSocketService,
+                serverSocketService, rsaService
+        );
     }
 
-    /*@Provides
+    @Provides
     @IntoMap
     @Named("Controllers")
     @ClassKey(SettingsViewController.class)
-    static Object provideSettingsViewController(GenerateKeyPairEventHandler generateKeyPairEventHandler) {
-        return new SettingsViewController(generateKeyPairEventHandler);
-    }*/
+    static Object provideSettingsViewController(KeyStorage keyStorage,
+                                                LocalKeyService localKeyService,
+                                                RSAService rsaService) {
+        return new SettingsViewController(
+                keyStorage,
+                localKeyService,
+                rsaService
+        );
+    }
 
     @Provides
     public ObjectMapper provideObjectMapper() {

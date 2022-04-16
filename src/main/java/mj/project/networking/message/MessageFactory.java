@@ -1,4 +1,4 @@
-package mj.project.networking.factories;
+package mj.project.networking.message;
 
 import mj.project.networking.data.NetworkPropertiesStorage;
 import mj.project.networking.message.Message;
