@@ -1,6 +1,7 @@
 package mj.project.networking.services;
 
-import mj.project.networking.message.Message;
+import mj.project.gui.controllers.MainViewController;
+import mj.project.networking.message.content.Message;
 import mj.project.networking.message.MessageSender;
 
 import javax.inject.Inject;
@@ -24,9 +25,15 @@ public class ClientSocketService {
         inputStream = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     }
 
-    public void sendMessage(Message message) {
-        MessageSender messageSender = new MessageSender();
-        messageSender.send(message, outputStream);
+    public void sendMessage(Message messageSimpleContent) {
+        try {
+            MessageSender messageSender = new MessageSender();
+            messageSender.send(messageSimpleContent, outputStream);
+            String response = inputStream.readLine();
+            MainViewController.addLog("response: " + response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void stopConnection() {

@@ -5,13 +5,11 @@ import javafx.event.EventHandler;
 import mj.project.configurations.AppConfig;
 import mj.project.encryption.data.KeyStorage;
 import mj.project.encryption.services.SessionKeyService;
-import mj.project.gui.controllers.Controllers;
 import mj.project.networking.services.ClientSocketService;
-import mj.project.networking.message.Message;
+import mj.project.networking.message.content.Message;
 import mj.project.networking.message.MessageType;
 
 import javax.crypto.SecretKey;
-import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 
@@ -31,7 +29,7 @@ public class SendSessionKeyEventHandler implements EventHandler<Event> {
 
     @Override
     public void handle(Event event) {
-        PublicKey recipientPublicKey = keyStorage.getRecipientPublicKey();
+       /* PublicKey recipientPublicKey = keyStorage.getRecipientPublicKey();
         if(recipientPublicKey == null) {
             throw new RuntimeException("Recipient's key not exists");
         }
@@ -39,7 +37,7 @@ public class SendSessionKeyEventHandler implements EventHandler<Event> {
         byte[] elo = secretKey.getEncoded();
         byte[] encryptedSessionKey = sessionKeyService.encryptSessionKey(secretKey, recipientPublicKey);
 
-        Message sessionKeyMessage = Message
+        Message sessionKeyMessageSimpleContent = Message
                 .builder()
                 .senderName("hello".getBytes(StandardCharsets.US_ASCII))
                 .content(encryptedSessionKey)
@@ -47,6 +45,6 @@ public class SendSessionKeyEventHandler implements EventHandler<Event> {
                 .build();
 
         //Controllers.getMainViewController().addMessage(elo);
-        clientSocketService.sendMessage(sessionKeyMessage);
+        clientSocketService.sendMessage(sessionKeyMessageSimpleContent);*/
     }
 }

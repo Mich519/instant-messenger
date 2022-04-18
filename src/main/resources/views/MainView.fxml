@@ -73,17 +73,21 @@
                         </TextArea>
                         <Button fx:id="sendSessionKeyButton" mnemonicParsing="false" text="Send session key" />
                         <Button fx:id="sendButton" alignment="CENTER" mnemonicParsing="false" text="Send" textAlignment="CENTER" />
-                        <Button fx:id="attachFileButton" mnemonicParsing="false" text="Attach file ..." />
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button fx:id="attachFileButton" mnemonicParsing="false" text="Send file ..." />
+                              <ProgressBar fx:id="progressBar" progress="0.0">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </ProgressBar>
+                           </children>
+                        </VBox>
                      </children>
                      <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </HBox>
-                  <ProgressBar fx:id="progressBar" progress="0.0">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </ProgressBar>
                   <Label fx:id="statusLabel" alignment="TOP_LEFT" text="Logs:" />
                </children></VBox>
             <HBox>

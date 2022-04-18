@@ -37,8 +37,6 @@ public class MainWindow extends Application {
         fxmlLoader.setControllerFactory(type -> controllers.get(type).get());
         Parent root = fxmlLoader.load();
 
-        ((MainViewController)fxmlLoader.getController()).setStage(stage);
-
         Scene scene = new Scene(
                 root,
                 AppConfig.SCREEN_WIDTH,

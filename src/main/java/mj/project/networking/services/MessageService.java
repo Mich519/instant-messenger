@@ -1,11 +1,12 @@
 package mj.project.networking.services;
 
 import mj.project.networking.message.MessageFactory;
-import mj.project.networking.message.Message;
+import mj.project.networking.message.content.Message;
 import mj.project.networking.message.MessageParser;
 import mj.project.networking.message.MessageType;
 
 import javax.inject.Inject;
+import java.util.List;
 
 public class MessageService {
 
@@ -18,11 +19,11 @@ public class MessageService {
         this.messageParser = messageParser;
     }
 
-    public Message createMessage(byte[] textContent, MessageType messageType) {
-        return messageFactory.createMessage(textContent, messageType);
+    public Message createMessage(List<byte[]> contentList, MessageType messageType) {
+        return messageFactory.createMessage(contentList, messageType);
     }
 
-    public void parseMessage(Message message) {
-        messageParser.parse(message);
+    public void parseMessage(Message messageSimpleContent) {
+        messageParser.parse(messageSimpleContent);
     }
 }

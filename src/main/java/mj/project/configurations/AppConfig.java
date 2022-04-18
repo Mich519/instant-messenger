@@ -27,5 +27,8 @@ public class AppConfig {
     public static final String PUBLIC_KEY_DIR_PATH = BASE_PATH + "\\public";
     public static final String PUBLIC_KEY_FILE_PATH = PUBLIC_KEY_DIR_PATH + "\\public_key.json";
 
+    public static final String TEMP_FILE_DIR_PATH = BASE_PATH + "\\temp";
+
     public static final List<String> ALLOWED_FILE_EXTENSIONS = List.of("*.txt", "*.png", "*.pdf", "*.avi");
+    public static int MAX_BYTES_PER_PACKET = 1000;
 }

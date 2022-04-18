@@ -1,11 +1,11 @@
 package mj.project.networking.message;
 
 import mj.project.networking.data.NetworkPropertiesStorage;
-import mj.project.networking.message.Message;
-import mj.project.networking.message.MessageType;
+import mj.project.networking.message.content.Message;
 
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public class MessageFactory {
 
@@ -16,11 +16,11 @@ public class MessageFactory {
         this.networkPropertiesStorage = networkPropertiesStorage;
     }
 
-    public Message createMessage(byte[] content, MessageType messageType) {
+    public Message createMessage(List<byte[]> contentList, MessageType messageType) {
         return Message.builder()
                 .messageType(messageType)
                 .senderName(networkPropertiesStorage.getMyNickName().getBytes(StandardCharsets.UTF_8))
-                .content(content)
+                .content(contentList)
                 .build();
     }
 }

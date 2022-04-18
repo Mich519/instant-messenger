@@ -8,10 +8,9 @@ import mj.project.encryption.data.KeyStorage;
 import mj.project.encryption.services.SessionKeyService;
 import mj.project.networking.data.NetworkPropertiesStorage;
 import mj.project.networking.services.ClientSocketService;
-import mj.project.networking.message.Message;
+import mj.project.networking.message.content.Message;
 import mj.project.networking.message.MessageType;
 
-import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 
 public class SendMessageEventHandler implements EventHandler<Event> {
@@ -35,16 +34,16 @@ public class SendMessageEventHandler implements EventHandler<Event> {
     @Override
     public void handle(Event event) {
 
-        if(keyStorage.getSessionKey() == null)
+       /* if(keyStorage.getSessionKey() == null)
             throw new RuntimeException("Session key not exchanged");
         String messageContent = textArea.getText();
         byte[] messageContentEncoded = sessionKeyService.encrypt(messageContent.getBytes(StandardCharsets.UTF_8), keyStorage.getSessionKey());
-        Message message = Message.builder()
+        Message messageSimpleContent = Message.builder()
                 .senderName(networkPropertiesStorage.getMyNickName().getBytes(StandardCharsets.UTF_8))
                 .content(messageContentEncoded)
                 .messageType(MessageType.TEXT)
                 .build();
 
-        clientSocketService.sendMessage(message);
+        clientSocketService.sendMessage(messageSimpleContent);*/
     }
 }

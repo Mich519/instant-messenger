@@ -1,10 +1,13 @@
 package mj.project.networking.message;
 
+
+import mj.project.networking.message.content.Message;
+
 import java.io.IOException;
-import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 
 public class MessageSender {
-    public void send(Message message, ObjectOutput out) {
+    public void send(Message message, ObjectOutputStream out) {
         try {
             out.writeObject(message);
             out.flush();
