@@ -1,7 +1,6 @@
 package mj.project.networking.message;
 
 import mj.project.networking.data.NetworkPropertiesStorage;
-import mj.project.networking.message.content.Message;
 
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;

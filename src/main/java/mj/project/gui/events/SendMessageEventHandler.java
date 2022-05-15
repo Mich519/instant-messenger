@@ -8,10 +8,6 @@ import mj.project.encryption.data.KeyStorage;
 import mj.project.encryption.services.SessionKeyService;
 import mj.project.networking.data.NetworkPropertiesStorage;
 import mj.project.networking.services.ClientSocketService;
-import mj.project.networking.message.content.Message;
-import mj.project.networking.message.MessageType;
-
-import java.nio.charset.StandardCharsets;
 
 public class SendMessageEventHandler implements EventHandler<Event> {
 

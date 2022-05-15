@@ -15,7 +15,7 @@ import mj.project.exceptions.RecipientKeyNotFound;
 import mj.project.gui.events.OpenSettingsWindowEventHandler;
 import mj.project.networking.data.NetworkPropertiesStorage;
 import mj.project.networking.message.MessageType;
-import mj.project.networking.message.content.Message;
+import mj.project.networking.message.Message;
 import mj.project.networking.services.ClientSocketService;
 import mj.project.networking.services.MessageService;
 import mj.project.networking.services.ServerSocketService;

@@ -1,6 +1,8 @@
 package mj.project.networking.message.parsers;
 
 import mj.project.encryption.data.KeyStorage;
+import mj.project.encryption.factories.SessionKeyFactory;
+import mj.project.encryption.services.RSAService;
 import mj.project.encryption.services.SessionKeyService;
 import mj.project.exceptions.MessageParserNotFoundForGivenMessageType;
 import mj.project.networking.message.MessageFactory;
@@ -14,21 +16,27 @@ public class MessageParserFactory {
     private final KeyStorage keyStorage;
     private final MessageFactory messageFactory;
 
+    private final RSAService rsaService;
+
+    private final SessionKeyFactory sessionKeyFactory;
+
     @Inject
-    public MessageParserFactory(SessionKeyService sessionKeyService, KeyStorage keyStorage, MessageFactory messageFactory) {
+    public MessageParserFactory(SessionKeyService sessionKeyService, KeyStorage keyStorage, MessageFactory messageFactory, RSAService rsaService, SessionKeyFactory sessionKeyFactory) {
         this.sessionKeyService = sessionKeyService;
         this.keyStorage = keyStorage;
         this.messageFactory = messageFactory;
+        this.rsaService = rsaService;
+        this.sessionKeyFactory = sessionKeyFactory;
     }
 
-    public IMessageParser createParser(MessageType messageType) {
+    public MessageParser createParser(MessageType messageType) {
         switch (messageType) {
-            case TEXT: return new TextIMessageParser(sessionKeyService, keyStorage, messageFactory);
-            case FILE: return null;
+            case TEXT: return new TextMessageParser(sessionKeyService, keyStorage, messageFactory);
+            case FILE: return new FileMessageParser(sessionKeyService, keyStorage, messageFactory);
+            case SESSION_KEY: return new SessionKeyMessageParser(sessionKeyService, keyStorage, messageFactory);
+            case PUBLIC_KEY: return new PublicKeyMessageParser(rsaService, keyStorage, messageFactory);
             case EMPTY: return null;
-            case SESSION_KEY: return null;
-            case PUBLIC_KEY: return null;
-            default: throw new MessageParserNotFoundForGivenMessageType();
         }
+        throw new MessageParserNotFoundForGivenMessageType();
     }
 }

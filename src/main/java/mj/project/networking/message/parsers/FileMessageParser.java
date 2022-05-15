@@ -5,15 +5,14 @@ import mj.project.encryption.data.KeyStorage;
 import mj.project.encryption.services.SessionKeyService;
 import mj.project.networking.message.MessageFactory;
 import mj.project.networking.message.MessageType;
-import mj.project.networking.message.content.Message;
+import mj.project.networking.message.Message;
 
 import javax.inject.Inject;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
-public class FileMessageParser implements IMessageParser {
+public class FileMessageParser implements MessageParser {
 
     private final SessionKeyService sessionKeyService;
     private final KeyStorage keyStorage;

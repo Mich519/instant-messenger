@@ -4,12 +4,13 @@ import mj.project.encryption.data.KeyStorage;
 import mj.project.encryption.services.RSAService;
 import mj.project.networking.message.MessageFactory;
 import mj.project.networking.message.MessageType;
-import mj.project.networking.message.content.Message;
+import mj.project.networking.message.Message;
 
+import javax.inject.Inject;
 import java.security.PublicKey;
 import java.util.List;
 
-public class PublicKeyMessageParser implements IMessageParser{
+public class PublicKeyMessageParser implements MessageParser {
 
     private final RSAService rsaService;
     private final KeyStorage keyStorage;

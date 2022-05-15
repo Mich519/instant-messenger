@@ -1,7 +1,7 @@
 package mj.project.networking.services;
 
 import mj.project.networking.message.MessageFactory;
-import mj.project.networking.message.content.Message;
+import mj.project.networking.message.Message;
 import mj.project.networking.message.MessageType;
 
 import javax.inject.Inject;

@@ -1,7 +1,7 @@
 package mj.project.networking.services;
 
 import mj.project.gui.controllers.MainViewController;
-import mj.project.networking.message.content.Message;
+import mj.project.networking.message.Message;
 import mj.project.networking.message.MessageSender;
 
 import javax.inject.Inject;

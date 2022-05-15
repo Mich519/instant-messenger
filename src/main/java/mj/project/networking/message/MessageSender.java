@@ -1,8 +1,6 @@
 package mj.project.networking.message;
 
 
-import mj.project.networking.message.content.Message;
-
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 

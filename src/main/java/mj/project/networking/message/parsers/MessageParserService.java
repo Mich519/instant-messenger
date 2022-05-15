@@ -1,6 +1,6 @@
 package mj.project.networking.message.parsers;
 
-import mj.project.networking.message.content.Message;
+import mj.project.networking.message.Message;
 
 import javax.inject.Inject;
 
@@ -14,7 +14,7 @@ public class MessageParserService {
     }
 
     public Message parseMessage(Message message) {
-        IMessageParser parser = messageParserFactory.createParser(message.getMessageType());
+        MessageParser parser = messageParserFactory.createParser(message.getMessageType());
         return parser.parse(message);
     }
 }

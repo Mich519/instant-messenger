@@ -5,21 +5,21 @@ import mj.project.encryption.services.SessionKeyService;
 import mj.project.gui.controllers.MainViewController;
 import mj.project.networking.message.MessageFactory;
 import mj.project.networking.message.MessageType;
-import mj.project.networking.message.content.Message;
+import mj.project.networking.message.Message;
 
 import javax.crypto.SecretKey;
 import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
 
-public class SessionKeyMessageParser implements IMessageParser {
+public class SessionKeyMessageParser implements MessageParser {
 
     private final SessionKeyService sessionKeyService;
     private final KeyStorage keyStorage;
 
     private final MessageFactory messageFactory;
 
-    @Inject
+
     public SessionKeyMessageParser(SessionKeyService sessionKeyService, KeyStorage keyStorage, MessageFactory messageFactory) {
         this.sessionKeyService = sessionKeyService;
         this.keyStorage = keyStorage;

@@ -2,7 +2,7 @@ package mj.project.networking.services;
 
 import javafx.concurrent.Task;
 import mj.project.gui.controllers.MainViewController;
-import mj.project.networking.message.content.Message;
+import mj.project.networking.message.Message;
 import mj.project.networking.message.parsers.MessageParserService;
 
 import javax.inject.Inject;
@@ -43,11 +43,12 @@ public class ServerSocketListenTask extends Task<Void> {
              Socket clientSocket = serverSocket.accept();
              PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
              ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream())) {
+
             MainViewController.addLog("Connection with client established");
             while (!stopped) {
                 Message message = (Message) in.readObject();
-                Message response = messageParserService.parseMessage(message);
-                out.print(response); // todo might not work - check
+                messageParserService.parseMessage(message);
+                out.println("200"); // todo might not work - check
             }
         } catch (IOException e) {
             e.printStackTrace();

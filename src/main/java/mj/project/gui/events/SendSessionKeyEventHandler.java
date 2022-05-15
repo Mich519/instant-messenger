@@ -6,12 +6,6 @@ import mj.project.configurations.AppConfig;
 import mj.project.encryption.data.KeyStorage;
 import mj.project.encryption.services.SessionKeyService;
 import mj.project.networking.services.ClientSocketService;
-import mj.project.networking.message.content.Message;
-import mj.project.networking.message.MessageType;
-
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
-import java.security.PublicKey;
 
 public class SendSessionKeyEventHandler implements EventHandler<Event> {
 
