@@ -3,6 +3,7 @@ package mj.project.networking.services;
 import javafx.concurrent.Task;
 import mj.project.gui.controllers.MainViewController;
 import mj.project.networking.message.content.Message;
+import mj.project.networking.message.parsers.MessageParserService;
 
 import javax.inject.Inject;
 import java.io.*;
@@ -15,19 +16,13 @@ public class ServerSocketListenTask extends Task<Void> {
 
     private final MessageService messageService;
 
-    @Inject
-    public ServerSocketListenTask(MessageService messageService) {
-        this.messageService = messageService;
-    }
+    private final MessageParserService messageParserService;
 
-    private void readMessage(ObjectInput in) {
-        try {
-            Object o = in.readObject();
-            Message m = (Message) o;
-            messageService.parseMessage(m);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+
+    @Inject
+    public ServerSocketListenTask(MessageService messageService, MessageParserService messageParserService) {
+        this.messageService = messageService;
+        this.messageParserService = messageParserService;
     }
 
     private int assignFreePort() {
@@ -37,25 +32,27 @@ public class ServerSocketListenTask extends Task<Void> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        MainViewController.addLog("Listening on port: " + freePort );
+        MainViewController.addLog("Listening on port: " + freePort);
         return freePort;
     }
 
 
     @Override
     protected Void call() {
-        try (ServerSocket serverSocket = new ServerSocket(assignFreePort() );
+        try (ServerSocket serverSocket = new ServerSocket(assignFreePort());
              Socket clientSocket = serverSocket.accept();
              PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-             ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream()))
-        {
-            MainViewController.addLog("Connection with client established" );
+             ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream())) {
+            MainViewController.addLog("Connection with client established");
             while (!stopped) {
-                readMessage(in);
-                out.println("200");
+                Message message = (Message) in.readObject();
+                Message response = messageParserService.parseMessage(message);
+                out.print(response); // todo might not work - check
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }

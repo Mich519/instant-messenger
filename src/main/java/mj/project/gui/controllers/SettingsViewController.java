@@ -26,17 +26,7 @@ public class SettingsViewController {
     @FXML
     RadioButton ecbRadioButton;
 
-    @FXML
-    TextField loadKeyPairPasswordTextField;
 
-    @FXML
-    TextField generateKeyPairPasswordTextField;
-
-    @FXML
-    Button loadKeyPairButton;
-
-    @FXML
-    Button generateKeyPairButton;
 
     private final KeyStorage keyStorage;
     private final LocalKeyService localKeyService;
@@ -63,18 +53,6 @@ public class SettingsViewController {
         cbcRadioButton.setUserData(BlockCipher.CBC);
         cbcRadioButton.setSelected(true);
 
-        generateKeyPairButton.setOnMouseClicked(event -> {
-            byte[] localKey = generateKeyPairPasswordTextField.getText().getBytes();
-            KeyPair keyPair = rsaService.createKeyPair();
-            keyStorage.setThisKeyPair(keyPair);
-            keyStorage.setLocalKey(localKey);
-            rsaService.saveKeyPairToFile(keyPair, AppConfig.PRIVATE_KEY_FILE_PATH, AppConfig.PUBLIC_KEY_FILE_PATH, localKey);
-        });
 
-        loadKeyPairButton.setOnMouseClicked(event -> {
-            byte[] localKey = loadKeyPairPasswordTextField.getText().getBytes();
-            KeyPair keyPair = rsaService.loadKeyPairFromFile(AppConfig.PRIVATE_KEY_FILE_PATH, AppConfig.PUBLIC_KEY_FILE_PATH, localKey);
-            keyStorage.setThisKeyPair(keyPair);
-        });
     }
 }

@@ -30,6 +30,7 @@ public class ClientSocketService {
             MessageSender messageSender = new MessageSender();
             messageSender.send(messageSimpleContent, outputStream);
             String response = inputStream.readLine();
+
             MainViewController.addLog("response: " + response);
         } catch (IOException e) {
             e.printStackTrace();

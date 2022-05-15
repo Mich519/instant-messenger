@@ -9,6 +9,7 @@ import mj.project.configurations.AppConfig;
 import mj.project.encryption.data.KeyStorage;
 import mj.project.encryption.services.RSAService;
 import mj.project.encryption.services.SessionKeyService;
+import mj.project.exceptions.KeyPairNotFound;
 import mj.project.exceptions.PortRangeException;
 import mj.project.exceptions.RecipientKeyNotFound;
 import mj.project.gui.events.OpenSettingsWindowEventHandler;
@@ -72,6 +73,18 @@ public class MainViewController {
     @FXML
     ProgressBar progressBar;
 
+    @FXML
+    TextField loadKeyPairPasswordTextField;
+
+    @FXML
+    TextField generateKeyPairPasswordTextField;
+
+    @FXML
+    Button loadKeyPairButton;
+
+    @FXML
+    Button generateKeyPairButton;
+
     private final KeyStorage keyStorage;
     private final NetworkPropertiesStorage networkPropertiesStorage;
 
@@ -104,6 +117,7 @@ public class MainViewController {
 
         // initial stuff
 
+
         // send event
         sendButton.setOnMouseClicked(event -> {
             String messageContent = textArea.getText();
@@ -115,15 +129,15 @@ public class MainViewController {
         // connect event
         connectButton.setOnMouseClicked(event -> {
             try {
+                if (keyStorage.getThisKeyPair() == null) {
+                    log("Your key pair not found. Please Generate new key pair.");
+                    throw new KeyPairNotFound();
+                }
                 int recipientPort = Integer.parseInt(recipientPortTextField.getText());
                 if (recipientPort < 0 || recipientPort > 65535) {
                     throw new PortRangeException();
                 }
-                if (keyStorage.getThisKeyPair() == null) {
-                    log("Your key pair not found. Generating new key pair ...");
-                    KeyPair newKeyPair = rsaService.createKeyPair();
-                    keyStorage.setThisKeyPair(newKeyPair);
-                }
+
                 log("Connecting with a host ...");
 
                 // connect with a server
@@ -132,7 +146,7 @@ public class MainViewController {
                 Message publicKeyMessageSimpleContent = messageService.createMessage(List.of(encodedPublicKey), MessageType.PUBLIC_KEY);
                 clientSocketService.sendMessage(publicKeyMessageSimpleContent);
 
-                // now send session key bro
+                // now send session key
                 if (keyStorage.getSessionKey() == null) {
                     PublicKey recipientPublicKey = keyStorage.getRecipientPublicKey();
                     if (recipientPublicKey == null) {
@@ -155,10 +169,35 @@ public class MainViewController {
                 e.printStackTrace();
             }
         });
-        listenButton.setOnMouseClicked(event -> serverSocketService.startListening());
+        listenButton.setOnMouseClicked(event -> {
+            if (keyStorage.getThisKeyPair() == null) {
+                log("Your key pair not found. Please Generate new key pair.");
+                throw new KeyPairNotFound();
+            }
+            serverSocketService.startListening();
+
+        });
         stopButton.setOnMouseClicked(event -> serverSocketService.stopListening());
 
-        attachFileButton.setOnMouseClicked(event -> {
+        generateKeyPairButton.setOnMouseClicked(event -> {
+            byte[] localKey = generateKeyPairPasswordTextField.getText().getBytes();
+            KeyPair keyPair = rsaService.createKeyPair();
+            keyStorage.setThisKeyPair(keyPair);
+            keyStorage.setLocalKey(localKey);
+            rsaService.saveKeyPairToFile(keyPair, AppConfig.PRIVATE_KEY_FILE_PATH, AppConfig.PUBLIC_KEY_FILE_PATH, localKey);
+            MainViewController.addLog("Key pair generated");
+        });
+
+        loadKeyPairButton.setOnMouseClicked(event -> {
+            byte[] localKey = loadKeyPairPasswordTextField.getText().getBytes();
+            KeyPair keyPair = rsaService.loadKeyPairFromFile(AppConfig.PRIVATE_KEY_FILE_PATH, AppConfig.PUBLIC_KEY_FILE_PATH, localKey);
+            keyStorage.setThisKeyPair(keyPair);
+            MainViewController.addLog("Key pair loaded");
+        });
+
+        attachFileButton.setOnMouseClicked(event ->
+
+        {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Open Resource File");
             FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Specific files", AppConfig.ALLOWED_FILE_EXTENSIONS);
@@ -184,9 +223,13 @@ public class MainViewController {
         });
 
         //todo
-        optionsMenuItem.setOnAction(new OpenSettingsWindowEventHandler());
+        optionsMenuItem.setOnAction(new
 
-        sendSessionKeyButton.setOnMouseClicked(event -> {
+                OpenSettingsWindowEventHandler());
+
+        sendSessionKeyButton.setOnMouseClicked(event ->
+
+        {
         });
     }
 
@@ -194,7 +237,16 @@ public class MainViewController {
         logsContainer.getChildren().add(new Label(text));
     }
 
+    private void appendTextMessageLabel(String labelText) {
+        Label l = new Label(labelText);
+        messageContainer.getChildren().add(l);
+    }
+
     public static void addLog(String text) {
         Platform.runLater(() -> Controllers.getMainViewController().log(text));
+    }
+    public static void addTextMessage(byte[] content, byte[] sender) {
+        String a = new String(sender) + ": " + new String(content);
+        Platform.runLater(() -> Controllers.getMainViewController().appendTextMessageLabel(a));
     }
 }

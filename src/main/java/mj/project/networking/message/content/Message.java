@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import mj.project.networking.message.MessageType;
+import mj.project.networking.message.parsers.IMessageParser;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 @ToString
 @Builder
 public class Message implements Serializable {
-    private List<byte[]> content;
-    private byte[] senderName;
-    private MessageType messageType;
+    private final List<byte[]> content;
+    private final byte[] senderName;
+    private final MessageType messageType;
 }
