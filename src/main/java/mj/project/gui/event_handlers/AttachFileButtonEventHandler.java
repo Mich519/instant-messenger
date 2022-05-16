@@ -11,9 +11,11 @@ import mj.project.networking.message.Message;
 import mj.project.networking.message.MessageService;
 import mj.project.networking.message.MessageType;
 import mj.project.networking.sockets.ClientSocketService;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +28,6 @@ public class AttachFileButtonEventHandler implements EventHandler<Event> {
     private final KeyStorage keyStorage;
     private final MessageService messageService;
     private final ClientSocketService clientSocketService;
-
     public AttachFileButtonEventHandler(Pane logsContainer, SessionKeyService sessionKeyService, KeyStorage keyStorage, MessageService messageService, ClientSocketService clientSocketService) {
         this.logsContainer = logsContainer;
         this.sessionKeyService = sessionKeyService;
@@ -35,13 +36,27 @@ public class AttachFileButtonEventHandler implements EventHandler<Event> {
         this.clientSocketService = clientSocketService;
     }
 
+    private void divideFileBytesIntoPackets(List<byte[]> packetList, byte[] fileBytes) {
+        for (int i = 0; i < fileBytes.length; i += AppConfig.MAX_BYTES_PER_PACKET) {
+            byte[] packet = Arrays.copyOfRange(fileBytes, i, Math.min(fileBytes.length, i + AppConfig.MAX_BYTES_PER_PACKET));
+            byte[] encryptedPacket = sessionKeyService.encrypt(packet, keyStorage.getSessionKey());
+            packetList.add(encryptedPacket);
+        }
+    }
+
     @Override
     public void handle(Event event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Specific files", AppConfig.ALLOWED_FILE_EXTENSIONS);
+        FileChooser.ExtensionFilter extensionFilter =
+                new FileChooser.ExtensionFilter("Specific files", AppConfig.ALLOWED_FILE_EXTENSIONS);
         fileChooser.getExtensionFilters().add(extensionFilter);
+
         File selectedFile = fileChooser.showOpenDialog(logsContainer.getScene().getWindow());
+
+        String ext =  FilenameUtils.getExtension(selectedFile.getName());
+        String filename = FilenameUtils.getName(selectedFile.getName());
+
         byte[] fileBytes = null;
         try {
             fileBytes = Files.readAllBytes(selectedFile.toPath());
@@ -52,11 +67,10 @@ public class AttachFileButtonEventHandler implements EventHandler<Event> {
             throw new RuntimeException();
         }
         List<byte[]> packetList = new ArrayList<>();
-        for (int i = 0; i < fileBytes.length; i += AppConfig.MAX_BYTES_PER_PACKET) {
-            byte[] packet = Arrays.copyOfRange(fileBytes, i, Math.min(fileBytes.length, i + AppConfig.MAX_BYTES_PER_PACKET));
-            byte[] encryptedPacket = sessionKeyService.encrypt(packet, keyStorage.getSessionKey());
-            packetList.add(encryptedPacket);
-        }
+        packetList.add(filename.getBytes(StandardCharsets.UTF_8));
+        packetList.add(ext.getBytes(StandardCharsets.UTF_8));
+
+        divideFileBytesIntoPackets(packetList, fileBytes);
         Message message = messageService.createMessage(packetList, MessageType.FILE);
         clientSocketService.sendMessage(message);
     }

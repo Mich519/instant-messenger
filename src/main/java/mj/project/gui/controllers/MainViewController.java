@@ -4,28 +4,17 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.stage.FileChooser;
-import mj.project.configurations.AppConfig;
 import mj.project.encryption.data.KeyStorage;
 import mj.project.encryption.services.RSAService;
 import mj.project.encryption.services.SessionKeyService;
 import mj.project.gui.event_handlers.*;
 import mj.project.gui.events.OpenSettingsWindowEventHandler;
 import mj.project.networking.data.NetworkPropertiesStorage;
-import mj.project.networking.message.MessageType;
-import mj.project.networking.message.Message;
-import mj.project.networking.sockets.ClientSocketService;
 import mj.project.networking.message.MessageService;
+import mj.project.networking.sockets.ClientSocketService;
 import mj.project.networking.sockets.ServerSocketService;
 
 import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.security.KeyPair;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class MainViewController {
 

@@ -13,10 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class FileMessageParser implements MessageParser {
-
     private final SessionKeyService sessionKeyService;
     private final KeyStorage keyStorage;
-
     private final MessageFactory messageFactory;
 
     @Inject
@@ -34,11 +32,14 @@ public class FileMessageParser implements MessageParser {
      */
     @Override
     public Message parse(Message message) {
+        List<byte[]> content = message.getContent();
         String filename = new String(message.getContent().get(0));
-        String fileExt =  new String(message.getContent().get(1));
+        String fileExt = new String(message.getContent().get(1));
 
-        try (FileOutputStream output = new FileOutputStream(AppConfig.TEMP_FILE_DIR_PATH + "\\filename", true)) {
-            message.getContent().stream()
+        content = content.subList(2, content.size());
+
+        try (FileOutputStream output = new FileOutputStream(AppConfig.TEMP_FILE_DIR_PATH + "\\" + filename + "." + fileExt, true)) {
+            content.stream()
                     .map(packetBytes -> sessionKeyService.decrypt(packetBytes, keyStorage.getSessionKey()))
                     .forEach(packetBytesDecrypted -> {
                         try {
