@@ -12,9 +12,9 @@ import mj.project.encryption.services.SessionKeyService;
 import mj.project.gui.controllers.MainViewController;
 import mj.project.gui.controllers.SettingsViewController;
 import mj.project.networking.data.NetworkPropertiesStorage;
-import mj.project.networking.services.ClientSocketService;
-import mj.project.networking.services.MessageService;
-import mj.project.networking.services.ServerSocketService;
+import mj.project.networking.sockets.ClientSocketService;
+import mj.project.networking.message.MessageService;
+import mj.project.networking.sockets.ServerSocketService;
 
 import javax.inject.Named;
 

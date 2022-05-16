@@ -1,4 +1,4 @@
-package mj.project.networking.message.parsers;
+package mj.project.networking.parsers;
 
 import mj.project.configurations.AppConfig;
 import mj.project.encryption.data.KeyStorage;
@@ -26,8 +26,17 @@ public class FileMessageParser implements MessageParser {
         this.messageFactory = messageFactory;
     }
 
+    /**
+     * File message is interpreted as follows:
+     * First element of content list is file name.
+     * Second element of content list is file extension.
+     * The subsequent elements are file bytes.
+     */
     @Override
     public Message parse(Message message) {
+        String filename = new String(message.getContent().get(0));
+        String fileExt =  new String(message.getContent().get(1));
+
         try (FileOutputStream output = new FileOutputStream(AppConfig.TEMP_FILE_DIR_PATH + "\\filename", true)) {
             message.getContent().stream()
                     .map(packetBytes -> sessionKeyService.decrypt(packetBytes, keyStorage.getSessionKey()))

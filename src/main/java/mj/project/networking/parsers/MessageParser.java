@@ -1,4 +1,4 @@
-package mj.project.networking.message.parsers;
+package mj.project.networking.parsers;
 
 import mj.project.networking.message.Message;
 

@@ -5,7 +5,7 @@ import javafx.event.EventHandler;
 import mj.project.configurations.AppConfig;
 import mj.project.encryption.data.KeyStorage;
 import mj.project.encryption.services.SessionKeyService;
-import mj.project.networking.services.ClientSocketService;
+import mj.project.networking.sockets.ClientSocketService;
 
 public class SendSessionKeyEventHandler implements EventHandler<Event> {
 

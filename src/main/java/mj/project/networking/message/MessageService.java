@@ -1,4 +1,4 @@
-package mj.project.networking.services;
+package mj.project.networking.message;
 
 import mj.project.networking.message.MessageFactory;
 import mj.project.networking.message.Message;

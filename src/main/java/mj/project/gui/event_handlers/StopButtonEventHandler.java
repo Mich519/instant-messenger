@@ -1,14 +1,14 @@
-package mj.project.gui.events;
+package mj.project.gui.event_handlers;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import mj.project.networking.sockets.ServerSocketService;
 
-public class StopEventHandler implements EventHandler<Event> {
+public class StopButtonEventHandler implements EventHandler<Event> {
 
     private final ServerSocketService serverSocketService;
 
-    public StopEventHandler(ServerSocketService serverSocketService) {
+    public StopButtonEventHandler(ServerSocketService serverSocketService) {
         this.serverSocketService = serverSocketService;
     }
 

@@ -3,9 +3,7 @@ package mj.project.gui.events;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
-import mj.project.networking.services.ServerSocketService;
-
-import javax.inject.Inject;
+import mj.project.networking.sockets.ServerSocketService;
 
 public class ListenEventHandler implements EventHandler<Event> {
 

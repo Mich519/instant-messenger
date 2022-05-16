@@ -7,7 +7,7 @@ import mj.project.configurations.AppConfig;
 import mj.project.encryption.data.KeyStorage;
 import mj.project.encryption.services.SessionKeyService;
 import mj.project.networking.data.NetworkPropertiesStorage;
-import mj.project.networking.services.ClientSocketService;
+import mj.project.networking.sockets.ClientSocketService;
 
 public class SendMessageEventHandler implements EventHandler<Event> {
 

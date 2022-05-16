@@ -1,4 +1,4 @@
-package mj.project.networking.message.parsers;
+package mj.project.networking.parsers;
 
 import mj.project.encryption.data.KeyStorage;
 import mj.project.encryption.services.RSAService;
@@ -7,7 +7,6 @@ import mj.project.networking.message.MessageFactory;
 import mj.project.networking.message.MessageType;
 import mj.project.networking.message.Message;
 
-import javax.inject.Inject;
 import java.security.PublicKey;
 import java.util.Arrays;
 import java.util.List;

@@ -1,4 +1,4 @@
-package mj.project.networking.services;
+package mj.project.networking.sockets;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

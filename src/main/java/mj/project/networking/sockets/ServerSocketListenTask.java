@@ -1,9 +1,9 @@
-package mj.project.networking.services;
+package mj.project.networking.sockets;
 
 import javafx.concurrent.Task;
 import mj.project.gui.controllers.MainViewController;
 import mj.project.networking.message.Message;
-import mj.project.networking.message.parsers.MessageParserService;
+import mj.project.networking.parsers.MessageParserService;
 
 import javax.inject.Inject;
 import java.io.*;
@@ -14,18 +14,14 @@ public class ServerSocketListenTask extends Task<Void> {
 
     private volatile boolean stopped = false;
 
-    private final MessageService messageService;
-
     private final MessageParserService messageParserService;
 
-
     @Inject
-    public ServerSocketListenTask(MessageService messageService, MessageParserService messageParserService) {
-        this.messageService = messageService;
+    public ServerSocketListenTask(MessageParserService messageParserService) {
         this.messageParserService = messageParserService;
     }
 
-    private int assignFreePort() {
+    private int findFreePort() {
         int freePort = -1;
         try (ServerSocket ignored = new ServerSocket(0)) {
             freePort = ignored.getLocalPort();
@@ -38,7 +34,7 @@ public class ServerSocketListenTask extends Task<Void> {
 
     @Override
     protected Void call() {
-        try (ServerSocket serverSocket = new ServerSocket(assignFreePort());
+        try (ServerSocket serverSocket = new ServerSocket(findFreePort());
              Socket clientSocket = serverSocket.accept();
              ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
              ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream())) {

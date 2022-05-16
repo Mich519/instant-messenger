@@ -7,9 +7,7 @@ import javafx.scene.control.TextField;
 import mj.project.encryption.services.RSAService;
 import mj.project.exceptions.PortRangeException;
 import mj.project.networking.data.NetworkPropertiesStorage;
-import mj.project.networking.services.ClientSocketService;
-
-import javax.inject.Inject;
+import mj.project.networking.sockets.ClientSocketService;
 
 public class ConnectEventHandler implements EventHandler<Event> {
 

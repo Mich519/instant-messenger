@@ -1,9 +1,9 @@
-package mj.project.networking.services;
+package mj.project.networking.sockets;
 
 import mj.project.gui.controllers.MainViewController;
 import mj.project.networking.message.Message;
 import mj.project.networking.message.MessageSender;
-import mj.project.networking.message.parsers.MessageParserService;
+import mj.project.networking.parsers.MessageParserService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
