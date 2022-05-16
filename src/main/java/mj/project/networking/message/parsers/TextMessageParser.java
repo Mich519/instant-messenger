@@ -27,7 +27,8 @@ public class TextMessageParser implements MessageParser {
         byte[] senderName = message.getSenderName();
         byte[] decryptedMessageBytes = sessionKeyService.decrypt(message.getContent().get(0), keyStorage.getSessionKey());
         MainViewController.addLog("Recieved message: " + new String(decryptedMessageBytes, StandardCharsets.UTF_8));
-        MainViewController.addTextMessage(decryptedMessageBytes, senderName);
-        return messageFactory.createMessage(List.of(), MessageType.EMPTY);
+        String messageContent = new String(senderName) + ": " + new String(decryptedMessageBytes);
+        MainViewController.addTextMessage(messageContent);
+        return messageFactory.createMessage(List.of(message.getContent().get(0)), MessageType.TEXT);
     }
 }

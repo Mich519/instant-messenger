@@ -9,6 +9,7 @@ import mj.project.networking.message.MessageFactory;
 import mj.project.networking.message.MessageType;
 
 import javax.inject.Inject;
+import java.util.Optional;
 
 public class MessageParserFactory {
 
@@ -35,7 +36,7 @@ public class MessageParserFactory {
             case FILE: return new FileMessageParser(sessionKeyService, keyStorage, messageFactory);
             case SESSION_KEY: return new SessionKeyMessageParser(sessionKeyService, keyStorage, messageFactory);
             case PUBLIC_KEY: return new PublicKeyMessageParser(rsaService, keyStorage, messageFactory);
-            case EMPTY: return null;
+            case EMPTY: return new EmptyMessageParser();
         }
         throw new MessageParserNotFoundForGivenMessageType();
     }

@@ -5,6 +5,5 @@ public enum MessageType {
     FILE,
     PUBLIC_KEY,
     SESSION_KEY,
-    EMPTY,
-    PUBLIC_KEY_RESPONSE
+    EMPTY
 }

@@ -145,6 +145,7 @@ public class MainViewController {
                 byte[] encodedPublicKey = keyStorage.getThisKeyPair().getPublic().getEncoded();
                 Message publicKeyMessageSimpleContent = messageService.createMessage(List.of(encodedPublicKey), MessageType.PUBLIC_KEY);
                 clientSocketService.sendMessage(publicKeyMessageSimpleContent);
+                log("Public key has been sent to the user");
 
                 // now send session key
                 if (keyStorage.getSessionKey() == null) {
@@ -245,8 +246,7 @@ public class MainViewController {
     public static void addLog(String text) {
         Platform.runLater(() -> Controllers.getMainViewController().log(text));
     }
-    public static void addTextMessage(byte[] content, byte[] sender) {
-        String a = new String(sender) + ": " + new String(content);
-        Platform.runLater(() -> Controllers.getMainViewController().appendTextMessageLabel(a));
+    public static void addTextMessage(String content) {
+        Platform.runLater(() -> Controllers.getMainViewController().appendTextMessageLabel(content));
     }
 }

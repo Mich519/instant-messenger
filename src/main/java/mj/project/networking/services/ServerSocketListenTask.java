@@ -36,19 +36,19 @@ public class ServerSocketListenTask extends Task<Void> {
         return freePort;
     }
 
-
     @Override
     protected Void call() {
         try (ServerSocket serverSocket = new ServerSocket(assignFreePort());
              Socket clientSocket = serverSocket.accept();
-             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+             ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
              ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream())) {
-
+            out.flush();
             MainViewController.addLog("Connection with client established");
             while (!stopped) {
                 Message message = (Message) in.readObject();
-                messageParserService.parseMessage(message);
-                out.println("200"); // todo might not work - check
+                Message response = messageParserService.parseMessage(message);
+                out.writeObject(response);
+                //s out.println("200");
             }
         } catch (IOException e) {
             e.printStackTrace();
